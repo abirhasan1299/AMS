@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -255,12 +258,12 @@
                         <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="advocate_profile.html" id="nav-profile">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="advocate_profile.php" id="nav-profile">
                             <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
                         </a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.html" id="nav-logout">
+                        <a class="btn btn-primary-custom d-flex align-items-center" href="operation/logout.php" id="nav-logout">
                             <i data-lucide="log-out" class="me-2"></i> লগআউট
                         </a>
                     </li>
@@ -277,46 +280,47 @@
         <div class="container">
             <div class="welcome-card text-center">
                 <h1 class="display-5 fw-bold mb-3" id="welcome-heading">স্বাগতম, অ্যাডভোকেট!</h1>
-                <p class="lead text-muted mb-2" id="user-id-display">আপনার অ্যাডভোকেট আইডি: <span class="fw-bold text-primary-custom" id="user-id-value">Loading...</span></p>
+                <p class="lead text-muted mb-2" id="user-id-display">আপনার অ্যাডভোকেট আইডি: <span class="fw-bold text-primary-custom" id="user-id-value">ADV#<?php echo $_SESSION['unique_code'];
+                ?></span></p>
                 <p class="text-muted" id="dashboard-tagline">আপনার কেসলোড, অ্যাপয়েন্টমেন্ট এবং গুরুত্বপূর্ণ সতর্কতাগুলির একটি সংক্ষিপ্ত বিবরণ।</p>
             </div>
 
             <!-- Quick Action Buttons -->
             <div class="row g-4 mb-5">
                 <div class="col-md-6 col-lg-3">
-                    <a href="advocate_case-management.html" class="action-card">
+                    <a href="advocate_case-management.php" class="action-card">
                         <i data-lucide="briefcase" class="icon-size"></i>
                         <h5 id="action-case-management">কেস ব্যবস্থাপনা</h5>
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <a href="advocate_consultation-calendar.html" class="action-card">
+                    <a href="advocate_consultation-calendar.php" class="action-card">
                         <i data-lucide="calendar-check" class="icon-size"></i>
                         <h5 id="action-consultation-calendar">পরামর্শ ক্যালেন্ডার</h5>
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <a href="advocate_document-filing.html" class="action-card">
+                    <a href="advocate_document-filing.php" class="action-card">
                         <i data-lucide="file-text" class="icon-size"></i>
                         <h5 id="action-document-filing">নথি জমা</h5>
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <a href="advocate_notifications-advocate.html" class="action-card">
+                    <a href="advocate_notifications-advocate.php" class="action-card">
                         <i data-lucide="bell" class="icon-size"></i>
                         <h5 id="action-notifications">বিজ্ঞপ্তি ও সতর্কতা</h5>
                     </a>
                 </div>
                 <!-- Registered Advocate List Card -->
                 <div class="col-md-6 col-lg-3">
-                    <a href="registered_advocate.html" class="action-card">
+                    <a href="registered_advocate.php" class="action-card">
                         <i data-lucide="users" class="icon-size"></i>
                         <h5 id="action-advocate-list">নিবন্ধিত অ্যাডভোকেট তালিকা</h5>
                     </a>
                 </div>
                 <!-- Updated: Current Cases Card -->
                 <div class="col-md-6 col-lg-3">
-                    <a href="advocate_current-cases.html" class="action-card">
+                    <a href="advocate_current-cases.php" class="action-card">
                         <i data-lucide="folder-open" class="icon-size"></i> <!-- Changed icon -->
                         <h5 id="action-current-cases">চলমান কেসসমূহ</h5> <!-- Changed text -->
                     </a>
@@ -362,7 +366,7 @@
 
                 <!-- Public Prosecutor (PP) Panel -->
                 <div class="col-md-6 col-lg-4">
-                    <a href="advocate_pp-dashboard.html" class="sub-role-link">
+                    <a href="advocate_pp-dashboard.php" class="sub-role-link">
                         <div class="sub-role-panel" id="pp-panel">
                             <h4 id="pp-title">পাবলিক প্রসিকিউটর (PP)</h4>
                             <p class="text-muted" id="pp-description">সরকার/রাষ্ট্রের পক্ষে ফৌজদারি মামলা পরিচালনা করেন।</p>
@@ -372,7 +376,7 @@
 
                 <!-- Assistant Public Prosecutor (APP) Panel -->
                 <div class="col-md-6 col-lg-4">
-                    <a href="advocate_app-dashboard.html" class="sub-role-link">
+                    <a href="advocate_app-dashboard.php" class="sub-role-link">
                         <div class="sub-role-panel" id="app-panel">
                             <h4 id="app-title">সহকারী পাবলিক প্রসিকিউটর (APP)</h4>
                             <p class="text-muted" id="app-description">পাবলিক প্রসিকিউটরের তত্ত্বাবধানে কাজ করেন।</p>
@@ -382,7 +386,7 @@
 
                 <!-- Defense Counsel Panel -->
                 <div class="col-md-6 col-lg-4">
-                    <a href="advocate_defense-counsel-dashboard.html" class="sub-role-link">
+                    <a href="advocate_defense-counsel-dashboard.php" class="sub-role-link">
                         <div class="sub-role-panel" id="defense-counsel-panel">
                             <h4 id="defense-counsel-title">ডিফেন্স কাউন্সেল</h4>
                             <p class="text-muted" id="defense-counsel-description">ব্যক্তিগত ক্লায়েন্টদের প্রতিনিধিত্ব করেন।</p>
@@ -392,7 +396,7 @@
 
                 <!-- Special Public Prosecutor / Tribunal Advocate Panel -->
                 <div class="col-md-6 col-lg-4"> <!-- Centered for single column -->
-                    <a href="advocate_special-pp-dashboard.html" class="sub-role-link">
+                    <a href="advocate_special-pp-dashboard.php" class="sub-role-link">
                         <div class="sub-role-panel" id="special-pp-panel">
                             <h4 id="special-pp-title">বিশেষ পাবলিক প্রসিকিউটর / ট্রাইব্যুনাল অ্যাডভোকেট</h4>
                             <p class="text-muted" id="special-pp-description">উচ্চ-প্রোফাইল মামলার জন্য নিযুক্ত।</p>
@@ -716,13 +720,7 @@
                 // Dashboard Content
                 if (elementsToUpdate.welcomeHeading) elementsToUpdate.welcomeHeading.textContent = t.dashboard.welcomeHeading;
                 
-                // Handle userIdDisplay and userIdValue separately for robust translation
-                if (elementsToUpdate.userIdDisplay) {
-                    const currentUserIdText = elementsToUpdate.userIdValue ? elementsToUpdate.userIdValue.textContent : 'Loading...';
-                    elementsToUpdate.userIdDisplay.innerHTML = `${t.dashboard.userIdDisplay} <span class="fw-bold text-primary-custom" id="user-id-value">${currentUserIdText}</span>`;
-                    elementsToUpdate.userIdValue = document.getElementById('user-id-value'); // Re-get the reference
-                }
-                
+
                 if (elementsToUpdate.dashboardTagline) elementsToUpdate.dashboardTagline.textContent = t.dashboard.dashboardTagline;
 
                 // Action Card Titles
@@ -836,9 +834,6 @@
                 }
             }
 
-            // Initial content load and set dummy user data
-            updateContent();
-            setUserIdAndName();
         });
     </script>
 </body>

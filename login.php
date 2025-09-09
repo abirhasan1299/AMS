@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php
+ob_start();
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -182,7 +186,7 @@
                         </a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="signup.html" id="nav-signup">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="signup.php" id="nav-signup">
                             <i data-lucide="user-plus" class="me-2"></i> নিবন্ধন করুন
                         </a>
                     </li>
@@ -199,14 +203,46 @@
         <div class="login-card text-center">
             <!-- Dynamic Role Heading -->
             <h2 class="h3 fw-bold mb-4" id="main-login-heading"></h2>
-            <form id="loginForm">
+            <?php
+
+            if (isset($_POST['submit'])) {
+                include 'configuration/config.php';
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+
+                $sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+                $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+
+                if (mysqli_num_rows($result) > 0) {
+                    while($row = mysqli_fetch_assoc($result)) {
+
+                        $_SESSION['email'] = $row['email'];
+                        $_SESSION['password'] = $row['password'];
+                        $_SESSION['role'] = $row['role'];
+                        $_SESSION['id'] = $row['id'];
+                        $_SESSION['unique_code'] = $row['unique_code'];
+                        if($row['role']=='advocate'){
+                            header('location:advocate/advocate-dashboard.php');
+                        }elseif ($row['role']=='citizen'){
+                            header('location:citizen/citizen_dashboard.php');
+                        }elseif($row['role']=='admin'){
+                            header('location:admin/admin_dashboard.php');
+                        }
+
+                    }
+                }else{
+                    echo '<div class="alert alert-danger" role="alert">Wrong Credential, Try again...</div>';
+                }
+            }
+            ?>
+            <form id="loginForm" method="POST" action="<?php $_SERVER['PHP_SELF']; ?>" autocomplete="off">
                 <div class="mb-3 text-start">
                     <label for="loginEmail" class="form-label" id="label-email">ইমেল / আইডি</label>
-                    <input type="email" class="form-control" id="loginEmail" placeholder="আপনার ইমেল বা আইডি লিখুন">
+                    <input type="email" name="email" class="form-control" id="loginEmail" placeholder="আপনার ইমেল বা আইডি লিখুন">
                 </div>
                 <div class="mb-3 text-start">
                     <label for="loginPassword" class="form-label" id="label-password">পাসওয়ার্ড</label>
-                    <input type="password" class="form-control" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন">
+                    <input type="password" name="password" class="form-control" id="loginPassword" placeholder="আপনার পাসওয়ার্ড লিখুন">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="form-check">
@@ -217,8 +253,8 @@
                     </div>               
                 </div>
                 <!-- <button type="submit" class="btn btn-primary-custom w-100 mb-3"><a href="advocate-dashboard.html">প্রবেশ করুন</a></button> -->
-            <button type="submit" class="btn btn-primary-custom w-100 mb-3" id="btn-login">প্রবেশ করুন</button>
-                <p class="text-muted" id="no-account">আপনার কি অ্যাকাউন্ট নেই? <a href="signup.html" class="text-primary-custom text-decoration-none" id="create-account">নিবন্ধন করুন</a></p>
+            <button type="submit" name="submit" class="btn btn-primary-custom w-100 mb-3" id="btn-login">প্রবেশ করুন</button>
+                <p class="text-muted" id="no-account">আপনার কি অ্যাকাউন্ট নেই? <a href="signup.php" class="text-primary-custom text-decoration-none" id="create-account">নিবন্ধন করুন</a></p>
             </form>
         </div>
     </section>
@@ -389,7 +425,7 @@
                 
                 // For 'no-account' paragraph which contains a link
                 if (elementsToUpdate.noAccount) {
-                    elementsToUpdate.noAccount.innerHTML = `${t.loginPage.noAccount} <a href="signup.html" class="text-primary-custom text-decoration-none" id="create-account">${t.loginPage.createAccount}</a>`;
+                    elementsToUpdate.noAccount.innerHTML = `${t.loginPage.noAccount} <a href="signup.php" class="text-primary-custom text-decoration-none" id="create-account">${t.loginPage.createAccount}</a>`;
                 }
 
                 // Footer
@@ -417,3 +453,6 @@
     </script>
 </body>
 </html>
+<?php
+ob_end_flush();
+?>

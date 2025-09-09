@@ -181,7 +181,7 @@
 </head>
 <body>
 
-    <!-- Navigation Bar (Copied from advocate-dashboard.html for consistency) -->
+    <!-- Navigation Bar (Copied from advocate-dashboard.php for consistency) -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="index.html">
@@ -208,7 +208,7 @@
                         <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="advocate_profile.html" id="nav-profile">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="advocate_profile.php" id="nav-profile">
                             <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
                         </a>
                     </li>
@@ -295,7 +295,7 @@
         </div>
     </section>
 
-    <!-- Footer (Copied from advocate-dashboard.html for consistency) -->
+    <!-- Footer (Copied from advocate-dashboard.php for consistency) -->
     <footer class="bg-gray-900-custom text-light py-4">
         <div class="container text-center text-md-start d-md-flex justify-content-between align-items-center">
             <div class="mb-3 mb-md-0">

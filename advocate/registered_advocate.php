@@ -238,7 +238,7 @@
             </div>
 <!-- 
             <div class="text-center mt-5">
-                <a href="advocate-dashboard.html" class="btn btn-primary-custom" id="back-to-dashboard-button">
+                <a href="advocate-dashboard.php" class="btn btn-primary-custom" id="back-to-dashboard-button">
                     <i data-lucide="arrow-left" class="me-2"></i> ড্যাশবোর্ডে ফিরে যান
                 </a>
             </div> -->

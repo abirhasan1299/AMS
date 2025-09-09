@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View All Cases - Advocate & Criminology Management System - আইনপ্রহরী</title>
+    <title>System Settings - Advocate & Criminology Management System - আইনপ্রহরী</title>
 
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -104,31 +104,18 @@
             font-weight: 700;
             margin-bottom: 1.5rem;
         }
-        .table-responsive {
-            overflow-x: auto;
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
         }
-        .table th, .table td {
-            white-space: nowrap;
-            padding: 1rem;
+        .setting-item:last-child {
+            border-bottom: none;
         }
-        .badge-active {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        .badge-pending {
-            background-color: #fef3c7;
-            color: #92400e;
-        }
-        .badge-closed {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-        .action-icon {
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-        .action-icon:hover {
-            color: var(--accent-blue);
+        .setting-label {
+            font-weight: 500;
         }
         .text-primary-custom {
             color: var(--accent-blue) !important;
@@ -139,7 +126,6 @@
         .bg-gray-900-custom {
             background-color: var(--bg-dark);
         }
-
     /* Footer specific styling */
         footer a {
             transition: color 0.3s ease;
@@ -211,7 +197,7 @@
                         <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.html" id="nav-profile">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
                             <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
                         </a>
                     </li>
@@ -235,69 +221,54 @@
             <div class="content-card">
                 <div class="row">
                     <div class="col-md-8">
-                        <h2 class="section-header" id="header-cases">All Cases</h2>
+                        <h2 class="section-header" id="header-settings">System Settings</h2>
                         <p class="sub-header" id="sub-header-desc">
-                            A complete list of all cases in the system.
+                            Manage application behavior and configurations.
                         </p>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead>
-                            <tr>
-                                <th id="col-case-id">Case ID</th>
-                                <th id="col-title">Case Title</th>
-                                <th id="col-client">Client Name</th>
-                                <th id="col-advocate">Advocate Name</th>
-                                <th id="col-status">Status</th>
-                                <th id="col-actions">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>CASE-12345</td>
-                                <td>The State vs. John Doe</td>
-                                <td>John Doe</td>
-                                <td>Jane Smith</td>
-                                <td><span class="badge badge-active rounded-pill p-2" id="status-active">Active</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <i data-lucide="eye" class="action-icon text-muted" title="View Details"></i>
-                                        <i data-lucide="edit-3" class="action-icon text-muted" title="Edit"></i>
-                                        <i data-lucide="trash-2" class="action-icon text-danger" title="Delete"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>CASE-12346</td>
-                                <td>Civil Dispute - Property</td>
-                                <td>Lisa Ray</td>
-                                <td>Robert Fox</td>
-                                <td><span class="badge badge-pending rounded-pill p-2" id="status-pending">Pending</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <i data-lucide="eye" class="action-icon text-muted" title="View Details"></i>
-                                        <i data-lucide="edit-3" class="action-icon text-muted" title="Edit"></i>
-                                        <i data-lucide="trash-2" class="action-icon text-danger" title="Delete"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>CASE-12347</td>
-                                <td>Criminal Defense - Assault</td>
-                                <td>Alex Jones</td>
-                                <td>Jane Smith</td>
-                                <td><span class="badge badge-closed rounded-pill p-2" id="status-closed">Closed</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <i data-lucide="eye" class="action-icon text-muted" title="View Details"></i>
-                                        <i data-lucide="edit-3" class="action-icon text-muted" title="Edit"></i>
-                                        <i data-lucide="trash-2" class="action-icon text-danger" title="Delete"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <div class="setting-item">
+                        <div class="d-flex align-items-center">
+                            <i data-lucide="bell" class="me-3 text-muted"></i>
+                            <div>
+                                <div class="setting-label" id="setting-1-label">Email Notifications</div>
+                                <div class="text-sm text-muted" id="setting-1-text">Receive updates via email</div>
+                            </div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="notificationsSwitch" checked>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="d-flex align-items-center">
+                            <i data-lucide="lock" class="me-3 text-muted"></i>
+                            <div>
+                                <div class="setting-label" id="setting-2-label">Two-Factor Authentication</div>
+                                <div class="text-sm text-muted" id="setting-2-text">Add an extra layer of security to your account</div>
+                            </div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="twoFactorSwitch">
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <div class="d-flex align-items-center">
+                            <i data-lucide="cloud" class="me-3 text-muted"></i>
+                            <div>
+                                <div class="setting-label" id="setting-3-label">Auto-Backup</div>
+                                <div class="text-sm text-muted" id="setting-3-text">Automatically backup data to the cloud</div>
+                            </div>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="autoBackupSwitch">
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button class="btn btn-primary-custom d-inline-flex align-items-center" id="btn-backup-now">
+                            <i data-lucide="cloud-upload" class="me-2"></i> <span id="text-backup">Backup Now</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -358,17 +329,15 @@
                     'nav-profile': 'Admin Profile',
                     'nav-logout': 'Logout',
                     'language-toggle': 'বাংলা',
-                    'header-cases': 'All Cases',
-                    'sub-header-desc': 'A complete list of all cases in the system.',
-                    'col-case-id': 'Case ID',
-                    'col-title': 'Case Title',
-                    'col-client': 'Client Name',
-                    'col-advocate': 'Advocate Name',
-                    'col-status': 'Status',
-                    'col-actions': 'Actions',
-                    'status-active': 'Active',
-                    'status-pending': 'Pending',
-                    'status-closed': 'Closed',
+                    'header-settings': 'System Settings',
+                    'sub-header-desc': 'Manage application behavior and configurations.',
+                    'setting-1-label': 'Email Notifications',
+                    'setting-1-text': 'Receive updates via email',
+                    'setting-2-label': 'Two-Factor Authentication',
+                    'setting-2-text': 'Add an extra layer of security to your account',
+                    'setting-3-label': 'Auto-Backup',
+                    'setting-3-text': 'Automatically backup data to the cloud',
+                    'text-backup': 'Backup Now',
                     footer: {
                         copyright: 'All Rights Reserved.',
                         privacyPolicy: 'Privacy Policy',
@@ -385,17 +354,15 @@
                     'nav-profile': 'অ্যাডমিন প্রোফাইল',
                     'nav-logout': 'লগআউট',
                     'language-toggle': 'English',
-                    'header-cases': 'সব মামলা',
-                    'sub-header-desc': 'সিস্টেমের সমস্ত মামলার একটি সম্পূর্ণ তালিকা।',
-                    'col-case-id': 'মামলার আইডি',
-                    'col-title': 'মামলার শিরোনাম',
-                    'col-client': 'ক্লায়েন্টের নাম',
-                    'col-advocate': 'অ্যাডভোকেটের নাম',
-                    'col-status': 'অবস্থা',
-                    'col-actions': 'কার্যক্রম',
-                    'status-active': 'সক্রিয়',
-                    'status-pending': 'বিচারাধীন',
-                    'status-closed': 'বন্ধ',
+                    'header-settings': 'সিস্টেম সেটিংস',
+                    'sub-header-desc': 'অ্যাপ্লিকেশন আচরণ এবং কনফিগারেশন পরিচালনা করুন।',
+                    'setting-1-label': 'ইমেল বিজ্ঞপ্তি',
+                    'setting-1-text': 'ইমেলের মাধ্যমে আপডেট পান',
+                    'setting-2-label': 'টু-ফ্যাক্টর প্রমাণীকরণ',
+                    'setting-2-text': 'আপনার অ্যাকাউন্টে নিরাপত্তার একটি অতিরিক্ত স্তর যুক্ত করুন',
+                    'setting-3-label': 'স্বয়ংক্রিয় ব্যাকআপ',
+                    'setting-3-text': 'স্বয়ংক্রিয়ভাবে ক্লাউডে ডেটা ব্যাকআপ করুন',
+                    'text-backup': 'এখন ব্যাকআপ করুন',
                     footer: {
                         copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
                         privacyPolicy: "গোপনীয়তা নীতি",
@@ -404,7 +371,7 @@
                     }
                 }
             };
-
+            
             let currentLang = 'en';
 
             function updateContent() {
@@ -419,35 +386,23 @@
                 document.getElementById('language-toggle').textContent = t['language-toggle'];
 
                 // Update main content
-                document.getElementById('header-cases').textContent = t['header-cases'];
+                document.getElementById('header-settings').textContent = t['header-settings'];
                 document.getElementById('sub-header-desc').textContent = t['sub-header-desc'];
-                document.getElementById('col-case-id').textContent = t['col-case-id'];
-                document.getElementById('col-title').textContent = t['col-title'];
-                document.getElementById('col-client').textContent = t['col-client'];
-                document.getElementById('col-advocate').textContent = t['col-advocate'];
-                document.getElementById('col-status').textContent = t['col-status'];
-                document.getElementById('col-actions').textContent = t['col-actions'];
-                // Update badge texts using an alternative approach
-                const badgeActive = document.getElementById('status-active');
-                if (badgeActive) {
-                    badgeActive.textContent = t['status-active'];
-                }
-                const badgePending = document.getElementById('status-pending');
-                if (badgePending) {
-                    badgePending.textContent = t['status-pending'];
-                }
-                const badgeClosed = document.getElementById('status-closed');
-                if (badgeClosed) {
-                    badgeClosed.textContent = t['status-closed'];
-                }
-                
+                document.getElementById('setting-1-label').textContent = t['setting-1-label'];
+                document.getElementById('setting-1-text').textContent = t['setting-1-text'];
+                document.getElementById('setting-2-label').textContent = t['setting-2-label'];
+                document.getElementById('setting-2-text').textContent = t['setting-2-text'];
+                document.getElementById('setting-3-label').textContent = t['setting-3-label'];
+                document.getElementById('setting-3-text').textContent = t['setting-3-text'];
+                document.getElementById('text-backup').textContent = t['text-backup'];
+
                 // Update Footer
                 const currentYear = new Date().getFullYear();
                 document.getElementById('footer-copyright').textContent = `© ${currentYear} ${t.footer.copyright}`;
                 document.getElementById('footer-privacy').textContent = t.footer.privacyPolicy;
                 document.getElementById('footer-terms').textContent = t.footer.termsOfService;
                 document.getElementById('footer-sitemap').textContent = t.footer.sitemap;
-
+                
                 // Re-render Lucide icons after content update
                 lucide.createIcons();
             }
@@ -462,6 +417,22 @@
                 });
             }
 
+            // Event listener for a simple interactive element
+            const notificationsSwitch = document.getElementById('notificationsSwitch');
+            if (notificationsSwitch) {
+                notificationsSwitch.addEventListener('change', () => {
+                    const statusText = notificationsSwitch.checked ? 'On' : 'Off';
+                    showModal('Notifications Status', `Notifications have been turned ${statusText}.`);
+                });
+            }
+
+            const backupButton = document.getElementById('btn-backup-now');
+            if (backupButton) {
+                backupButton.addEventListener('click', () => {
+                    showModal('Backup Initiated', 'Data backup is in progress...');
+                });
+            }
+
             // Event listener for the back button
             const backToDashboardButton = document.getElementById('back-to-dashboard');
             if (backToDashboardButton) {
@@ -470,7 +441,6 @@
                 });
             }
 
-            // Initial content load
             updateContent();
         });
     </script>

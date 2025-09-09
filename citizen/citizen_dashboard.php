@@ -218,7 +218,7 @@
                         <a class="nav-link" href="contact.html" id="nav-contact" data-i18n-key="navContact">Contact</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="citizen_profile.html" id="nav-profile">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="citizen_profile.php" id="nav-profile">
                             <i data-lucide="user" class="me-2"></i> <span id="user-display-name">Profile</span>
                         </a>
                     </li>
@@ -246,25 +246,25 @@
 
             <div class="row g-4 mb-5">
                 <div class="col-md-6 col-lg-3">
-                    <a href="citizen_Consultation.html" class="action-card">
+                    <a href="citizen_Consultation.php" class="action-card">
                         <i data-lucide="calendar-plus" class="icon-size"></i>
                         <h5 data-i18n-key="actionBookConsultation">Book Legal Consultations</h5>
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <a href="citizen_crime-reporting.html" class="action-card">
+                    <a href="citizen_crime-reporting.php" class="action-card">
                         <i data-lucide="alert-triangle" class="icon-size"></i>
                         <h5 data-i18n-key="actionReportCrime">Crime Reporting Portal</h5>
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <a href="citizen_case-tracking.html" class="action-card">
+                    <a href="citizen_case-tracking.php" class="action-card">
                         <i data-lucide="clipboard-check" class="icon-size"></i>
                         <h5 data-i18n-key="actionTrackCases">Case & Report Status Tracking</h5>
                     </a>
                 </div>
                 <div class="col-md-6 col-lg-3">
-                    <a href="citizen_notification.html" class="action-card">
+                    <a href="citizen_notification.php" class="action-card">
                         <i data-lucide="bell" class="icon-size"></i>
                         <h5 data-i18n-key="actionNotifications">Notifications & Alerts</h5>
                     </a>

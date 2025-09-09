@@ -173,7 +173,7 @@
                         <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.html" id="nav-profile">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
                             <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
                         </a>
                     </li>

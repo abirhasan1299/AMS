@@ -253,7 +253,7 @@
                         <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.html" id="nav-profile">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
                             <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
                         </a>
                     </li>
@@ -324,35 +324,35 @@
                     <h4 class="section-header">Management Actions</h4>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="admin_add_new_user.html" class="action-card">
+                    <a href="admin_add_new_user.php" class="action-card">
                         <i data-lucide="user-plus" class="icon-size"></i>
                         <h5 class="mt-3">Add New User</h5>
                         <p class="text-sm text-medium">Create a new user account.</p>
                     </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="admin_view_all_users.html" class="action-card">
+                    <a href="admin_view_all_users.php" class="action-card">
                         <i data-lucide="list" class="icon-size"></i>
                         <h5 class="mt-3">View All Users</h5>
                         <p class="text-sm text-medium">See and manage all registered users.</p>
                     </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="admin_create_new_case.html" class="action-card">
+                    <a href="admin_create_new_case.php" class="action-card">
                         <i data-lucide="folder-plus" class="icon-size"></i>
                         <h5 class="mt-3">Create New Case</h5>
                         <p class="text-sm text-medium">Start a new case file.</p>
                     </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="admin_view_all_cases.html" class="action-card">
+                    <a href="admin_view_all_cases.php" class="action-card">
                         <i data-lucide="folder-search" class="icon-size"></i>
                         <h5 class="mt-3">View All Cases</h5>
                         <p class="text-sm text-medium">Search and manage all case files.</p>
                     </a>
                 </div>
                 <div class="col-md-4 mb-4">
-                    <a href="admin_system_settings.html" class="action-card">
+                    <a href="admin_system_settings.php" class="action-card">
                         <i data-lucide="settings" class="icon-size"></i>
                         <h5 class="mt-3">System Settings</h5>
                         <p class="text-sm text-medium">Configure application settings.</p>
@@ -552,7 +552,7 @@
         if (backToDashboardButton) {
             backToDashboardButton.addEventListener('click', () => {
                 // Redirects the user to the admin dashboard page.
-                // Assuming admin_dashboard.html is the correct URL for the dashboard.
+                // Assuming admin_dashboard.php is the correct URL for the dashboard.
                 window.location.href = 'admin_dashboard.html';
             });
         }

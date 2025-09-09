@@ -210,12 +210,12 @@
                         <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="login.html" id="nav-login">
+                        <a class="btn btn-primary-custom d-flex align-items-center" href="login.php" id="nav-login">
                             <i data-lucide="log-in" class="me-2"></i> প্রবেশ করুন
                         </a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="signup.html" id="nav-signup">
+                        <a class="btn btn-outline-primary d-flex align-items-center" href="signup.php" id="nav-signup">
                             <i data-lucide="user-plus" class="me-2"></i> নিবন্ধন করুন
                         </a>
                     </li>
@@ -231,30 +231,56 @@
     <section class="signup-container bg-blue-50-custom">
         <div class="signup-card text-center">
             <h2 class="h3 fw-bold mb-4" id="signup-heading">নিবন্ধন করুন</h2>
-            <form>
+            <?php
+            if (isset($_POST['submit'])) {
+                include 'configuration/config.php';
+                $name= $_POST['name'];
+                $unique_code =strtoupper(uniqid());
+                $email= $_POST['email'];
+                $phone  = $_POST['phone'];
+                $password= $_POST['password'];
+                $confirm_password= $_POST['confirm_password'];
+                $role = $_POST['role'];
+                if($password != $confirm_password){
+                    echo '<div class="alert alert-danger" role="alert">
+                        Passwords do not match!
+                    </div>';
+                }else{
+                    $sql = "INSERT INTO users(unique_code,name,email,phone,password,role) VALUES ('$unique_code','$name','$email','$phone','$password','$role')";
+                    $query = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                    if($query){
+                        echo '<div class="alert alert-success" role="alert">Signup Successfully Done, Go Login Area ...</div>';
+                    }else{
+                        echo '<div class="alert alert-danger" role="alert">Something Went Wrong</div>';
+                    }
+
+                }
+            }
+            ?>
+            <form action="<?php $_SERVER['PHP_SELF']; ?>" method="POST" autocomplete="off">
                 <div class="mb-3 text-start">
                     <label for="fullName" class="form-label" id="label-full-name">পুরো নাম</label>
-                    <input type="text" class="form-control" id="fullName" placeholder="আপনার পুরো নাম লিখুন" required>
+                    <input type="text" name="name" class="form-control" id="fullName" placeholder="আপনার পুরো নাম লিখুন" required>
                 </div>
                 <div class="mb-3 text-start">
                     <label for="signupEmail" class="form-label" id="label-email">ইমেল</label>
-                    <input type="email" class="form-control" id="signupEmail" placeholder="আপনার ইমেল লিখুন" required>
+                    <input type="email" name="email" class="form-control" id="signupEmail" placeholder="আপনার ইমেল লিখুন" required>
                 </div>
                 <div class="mb-3 text-start">
                     <label for="phoneNumber" class="form-label" id="label-phone">ফোন নম্বর (ঐচ্ছিক)</label>
-                    <input type="tel" class="form-control" id="phoneNumber" placeholder="আপনার ফোন নম্বর লিখুন">
+                    <input type="tel" name="phone" class="form-control" id="phoneNumber" placeholder="আপনার ফোন নম্বর লিখুন">
                 </div>
                 <div class="mb-3 text-start">
                     <label for="signupPassword" class="form-label" id="label-password">পাসওয়ার্ড</label>
-                    <input type="password" class="form-control" id="signupPassword" placeholder="একটি পাসওয়ার্ড তৈরি করুন" required>
+                    <input type="password" name="password" class="form-control" id="signupPassword" placeholder="একটি পাসওয়ার্ড তৈরি করুন" required>
                 </div>
                 <div class="mb-4 text-start">
                     <label for="confirmPassword" class="form-label" id="label-confirm-password">পাসওয়ার্ড নিশ্চিত করুন</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="পাসওয়ার্ড পুনরায় লিখুন" required>
+                    <input type="password" name="confirm_password" class="form-control" id="confirmPassword" placeholder="পাসওয়ার্ড পুনরায় লিখুন" required>
                 </div>
                 <div class="mb-4 text-start">
                     <label for="userRole" class="form-label" id="label-role">আপনার ভূমিকা নির্বাচন করুন</label>
-                    <select class="form-select" id="userRole" required>
+                    <select class="form-select" id="userRole" name="role" required>
                         <option value="">নির্বাচন করুন...</option>
                         <option value="citizen" id="option-citizen">নাগরিক</option>
                         <option value="advocate" id="option-advocate">আইনজীবী</option>
@@ -262,8 +288,8 @@
                     </select>
                     <small class="form-text role-note" id="role-verification-note">দ্রষ্টব্য: আইনজীবী, পুলিশ কর্মকর্তা, বিচারক এবং প্রশাসকের ভূমিকার জন্য যাচাইকরণ প্রয়োজন হবে।</small>
                 </div>
-                <button type="submit" class="btn btn-primary-custom w-100 mb-3" id="btn-signup">নিবন্ধন করুন</button>
-                <p class="text-muted" id="have-account">আপনার কি ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="login.html" class="text-primary-custom text-decoration-none" id="login-link">লগইন করুন</a></p>
+                <button type="submit" class="btn btn-primary-custom w-100 mb-3" id="btn-signup" name="submit">নিবন্ধন করুন</button>
+                <p class="text-muted" id="have-account">আপনার কি ইতিমধ্যে অ্যাকাউন্ট আছে? <a href="login.php" class="text-primary-custom text-decoration-none" id="login-link">লগইন করুন</a></p>
             </form>
         </div>
     </section>
@@ -404,7 +430,7 @@
                 document.getElementById('option-admin').textContent = t.signupPage.optionAdmin;
                 document.getElementById('role-verification-note').textContent = t.signupPage.roleVerificationNote;
                 document.getElementById('btn-signup').textContent = t.signupPage.btnSignup;
-                document.getElementById('have-account').innerHTML = `${t.signupPage.haveAccount} <a href="login.html" class="text-primary-custom text-decoration-none" id="login-link">${t.signupPage.loginLink}</a>`;
+                document.getElementById('have-account').innerHTML = `${t.signupPage.haveAccount} <a href="login.php" class="text-primary-custom text-decoration-none" id="login-link">${t.signupPage.loginLink}</a>`;
 
                 // Footer
                 document.getElementById('current-year').textContent = new Date().getFullYear();
