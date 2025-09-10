@@ -155,6 +155,7 @@ session_start();
         .case-list-item .actions button {
             margin-left: 0.5rem;
         }
+
         @media (max-width: 767px) {
             .case-list-item .actions {
                 width: 100%;
@@ -193,6 +194,48 @@ session_start();
         </div>
     </div>
 </div>
+
+<!--upoad modal-->
+<div class="modal fade" id="uploadModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="operation/ajax_upload_file.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Upload File for Case</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Hidden case id -->
+                    <input type="hidden" id="fileId" name="case_id"> <!-- replace with dynamic case ID -->
+
+                    <div class="mb-3">
+                        <label class="form-label">Choose File</label>
+                        <input type="file" name="case_file" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="upload" class="btn btn-success">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--details modal-->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Case Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="caseDetailsContent">
+                <!-- AJAX response will load here -->
+                <p class="text-muted">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!--end modal-->
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
@@ -276,13 +319,11 @@ session_start();
             <div class="row g-4 mb-5">
                 <div class="col-lg-12">
                     <div class="info-card">
-                        <h3 class="section-header" id="active-cases-heading">Active Cases</h3>
+                        <h3 class="section-header" id="active-cases-heading">All  Cases</h3>
                         <div id="active-case-list">
 
                         </div>
-                        <div class="d-grid gap-2 mt-3">
-                            <button class="btn btn-primary-custom" id="load-more-active-cases"><i data-lucide="refresh-cw" class="me-2"></i> Load More . . .</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -290,22 +331,11 @@ session_start();
             <div class="row g-4 mb-5">
                 <div class="col-lg-12">
                     <div class="info-card">
-                        <h3 class="section-header" id="closed-cases-heading">বন্ধ মামলা</h3>
+                        <h3 class="section-header" id="closed-cases-heading">Closed Cases</h3>
                         <div id="closed-case-list">
-                            <div class="case-list-item" id="closed-case-1">
-                                <div>
-                                    <h5>মামলা #FAM2024-001: ডিভোর্স কেস</h5>
-                                    <p class="text-muted mb-0">ক্লায়েন্ট: তানিয়া সুলতানা | স্থিতি: <span class="badge bg-success">নিষ্পত্তি হয়েছে</span></p>
-                                </div>
-                                <div class="actions">
-                                    <button class="btn btn-sm btn-outline-primary view-case-btn" data-case-id="FAM2024-001" id="view-closed-1"><i data-lucide="eye" class="me-1"></i> দেখুন</button>
-                                    <button class="btn btn-sm btn-outline-secondary archive-case-btn" data-case-id="FAM2024-001" id="archive-closed-1"><i data-lucide="archive" class="me-1"></i> সংরক্ষণাগার</button>
-                                </div>
-                            </div>
+
                         </div>
-                        <div class="d-grid gap-2 mt-3">
-                            <button class="btn btn-primary-custom" id="load-more-closed-cases"><i data-lucide="refresh-cw" class="me-2"></i> আরও বন্ধ মামলা লোড করুন</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -358,13 +388,24 @@ session_start();
 <script>
     $(document).ready(function(){
         loadCases();
+        loadClosedCases();
     });
+
     function loadCases() {
         $.ajax({
             url: "operation/ajax_case_show.php",
             type: "POST",
             success: function(data) {
                 $("#active-case-list").html(data);
+            }
+        });
+    }
+    function loadClosedCases() {
+        $.ajax({
+            url: "operation/ajax_closed_cases.php",
+            type: "POST",
+            success: function(data) {
+                $("#closed-case-list").html(data);
             }
         });
     }
@@ -379,7 +420,7 @@ session_start();
         $("#newStatus").val(currentStatus);
     });
 
-    // When "Save" clicked, send AJAX request
+
     $("#saveStatus").click(function() {
         let newStatus = $("#newStatus").val();
 
@@ -396,9 +437,36 @@ session_start();
                     // close modal
                     $("#statusModal").modal("hide");
                     loadCases();
+                    loadClosedCases();
                 } else {
                     alert("Error updating status");
                 }
+            }
+        });
+    });
+
+//======================File Upload-=-=-=-=-=-=-=-=-=-=-=
+    let selectedFileId = null;
+    $(document).on("click", ".uploadFileBtn", function() {
+        selectedFileId = $(this).data("id");
+        $("#fileId").val(selectedFileId);
+    });
+
+//=======================View Details=========================
+    $(document).on("click", ".viewDetailsBtn", function() {
+        let caseId = $(this).data("id");
+
+        $("#caseDetailsContent").html("<p class='text-muted'>Loading...</p>");
+
+        $.ajax({
+            url: "operation/ajax_fetch_case_details.php",
+            type: "POST",
+            data: { id: caseId },
+            success: function(response) {
+                $("#caseDetailsContent").html(response);
+            },
+            error: function() {
+                $("#caseDetailsContent").html("<p class='text-danger'>Error loading details.</p>");
             }
         });
     });

@@ -33,14 +33,20 @@ while ($row = mysqli_fetch_assoc($result)) {
             </span></p>
     </div>
     <div class="actions">
-        <button class="btn btn-sm btn-outline-primary view-case-btn"><i data-lucide="eye" class="me-1"></i> View</button>
+        <button class="btn btn-sm btn-outline-primary viewDetailsBtn"
+                data-id="<?php echo $row['id']; ?>"
+                data-bs-toggle="modal"
+                data-bs-target="#detailsModal"><i data-lucide="eye" class="me-1"></i> View</button>
 
         <button class="btn btn-sm btn-outline-success updateStatusBtn" data-id="<?php echo $row['id']; ?>"
                 data-status="<?php echo $row['status']; ?>"
                 data-bs-toggle="modal"
                 data-bs-target="#statusModal" ><i data-lucide="edit" class="me-1"></i> Update Status</button>
 
-        <button class="btn btn-sm btn-outline-info upload-document-btn"><i data-lucide="upload" class="me-1"></i> Add File</button>
+        <button class="btn btn-sm btn-outline-info uploadFileBtn"
+                data-id="<?php echo $row['id']; ?>"
+                data-bs-toggle="modal"
+                data-bs-target="#uploadModal"><i data-lucide="upload" class="me-1"></i> Add File</button>
     </div>
 </div>
 
