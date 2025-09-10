@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -192,6 +195,21 @@
     </style>
 </head>
 <body>
+<!--my modal list-->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Event Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="eventDetailsContent">
+                <!-- AJAX response will load here -->
+                <p class="text-muted">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
@@ -230,7 +248,7 @@
                         </a>
                     </li>
                     <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
+                        <div id="language-toggle"></div>
                     </li>
                 </ul>
             </div>
@@ -240,6 +258,7 @@
     <!-- Main Content Section -->
     <section class="main-content-container">
         <div class="container">
+            <?php include 'digging/add_event.php'; ?>
             <div class="info-card text-center">
                 <h1 class="display-5 fw-bold mb-3" id="page-heading">পরামর্শ ক্যালেন্ডার</h1>
                 <p class="lead text-muted mb-4" id="page-description">আপনার পরামর্শ এবং আদালতের শুনানির সময়সূচী পরিচালনা করুন।</p>
@@ -247,26 +266,34 @@
 
             <div class="row g-4 mb-5">
                 <div class="col-lg-12">
+                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" autocomplete="off">
                     <div class="info-card">
-                        <h3 class="section-header" id="calendar-overview-heading">ক্যালেন্ডার ওভারভিউ</h3>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <button class="btn btn-outline-secondary" id="prev-month-button"><i data-lucide="chevron-left"></i></button>
-                            <h4 class="mb-0" id="current-month-year">জুলাই 2025</h4>
-                            <button class="btn btn-outline-secondary" id="next-month-button"><i data-lucide="chevron-right"></i></button>
-                        </div>
-                        <div class="calendar-grid mb-4">
-                            <div class="calendar-header" id="day-sun">রবি</div>
-                            <div class="calendar-header" id="day-mon">সোম</div>
-                            <div class="calendar-header" id="day-tue">মঙ্গল</div>
-                            <div class="calendar-header" id="day-wed">বুধ</div>
-                            <div class="calendar-header" id="day-thu">বৃহস্পতি</div>
-                            <div class="calendar-header" id="day-fri">শুক্র</div>
-                            <div class="calendar-header" id="day-sat">শনি</div>
-                            <!-- Days will be dynamically loaded here by JavaScript -->
-                        </div>
+                        <h3 class="section-header" id="calendar-overview-heading">Create Schedule</h3>
+                        <label for="title">Title</label>
+                        <input type="text" placeholder="Event Title" class="form-control" id="title" name="title" required>
+                        <br>
+                        <label for="date">Select Date</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                        <br>
+                        <label for="time">Choose Best Time</label>
+                        <input type="time" class="form-control" id="time" name="time">
+                        <br>
+                        <label for="type">Select Type</label>
+                        <select class="form-control" name="type" id="type">
+                            <option selected disabled>Choose Event Type</option>
+                            <option value="Online Video">Online Video</option>
+                            <option value="In Office">In Office</option>
+                            <option value="Home">Home</option>
+                            <option value="Court">Court</option>
+                        </select>
+                        <br>
+                        <label for="venue">Venue</label>
+                        <input type="text" placeholder="Event Place" class="form-control" id="venue" name="venue" required>
+                        <br>
                         <div class="d-grid">
-                            <button class="btn btn-primary-custom" id="add-new-event-button"><i data-lucide="plus-circle" class="me-2"></i> নতুন ইভেন্ট যোগ করুন</button>
+                            <button type="submit" class="btn btn-primary-custom" id="add-new-event-button" name="submit"><i data-lucide="plus-circle" class="me-2"></i> Add New Event</button>
                         </div>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -274,26 +301,27 @@
             <div class="row g-4">
                 <div class="col-lg-12">
                     <div class="info-card">
-                        <h3 class="section-header" id="upcoming-events-heading">আসন্ন ইভেন্ট</h3>
+                        <h3 class="section-header" id="upcoming-events-heading">Upcoming Event</h3>
                         <div id="event-list">
+                            <?php
+                            include '../configuration/config.php';
+                            $sql = "SELECT * FROM event WHERE user_id={$_SESSION['id']} ORDER BY id DESC";
+                            $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                            while ($row = mysqli_fetch_assoc($result)) {
+                            ?>
                             <div class="event-list-item" id="event-1">
-                                <h6>ক্লায়েন্ট পরামর্শ: ফারহানা বেগম</h6>
-                                <p class="text-muted">তারিখ: 2025-07-16, 10:00 AM | ধরন: ভিডিও কল</p>
-                                <button class="btn btn-sm btn-outline-primary mt-2" id="manage-event-1"><i data-lucide="edit" class="me-1"></i> পরিচালনা করুন</button>
+                                <h6><?php echo $row['title'] ?></h6>
+                                <p class="text-muted">Schedule: <?php echo $row['date'] ?>, <?php echo $row['time'] ?> | Type: <?php echo $row['type'] ?></p>
+
+                                <button class="btn btn-sm btn-outline-primary mt-2 viewDetailsBtn"
+                                        data-id="<?php echo $row['id'] ?>"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#detailsModal"
+                                        id="manage-event-1"><i data-lucide="edit" class="me-1"></i> View</button>
+
+                                <a href="digging/event-trash.php?id=<?php echo $row['id'] ?>" class="btn btn-sm btn-outline-danger mt-2" id="manage-event-1" role="button"><i data-lucide="trash" class="me-1"></i> Trash</a>
                             </div>
-                            <div class="event-list-item" id="event-2">
-                                <h6>আদালতের শুনানি: মামলা #CR2025-001</h6>
-                                <p class="text-muted">তারিখ: 2025-07-20, 02:00 PM | স্থান: জেলা জজ আদালত</p>
-                                <button class="btn btn-sm btn-outline-primary mt-2" id="manage-event-2"><i data-lucide="edit" class="me-1"></i> পরিচালনা করুন</button>
-                            </div>
-                            <div class="event-list-item" id="event-3">
-                                <h6>টিম মিটিং: কেস স্ট্র্যাটেজি</h6>
-                                <p class="text-muted">তারিখ: 2025-07-25, 11:00 AM | স্থান: চেম্বার</p>
-                                <button class="btn btn-sm btn-outline-primary mt-2" id="manage-event-3"><i data-lucide="edit" class="me-1"></i> পরিচালনা করুন</button>
-                            </div>
-                        </div>
-                        <div class="d-grid gap-2 mt-3">
-                            <button class="btn btn-primary-custom" id="sync-calendar-button"><i data-lucide="refresh-cw" class="me-2"></i> ক্যালেন্ডার সিঙ্ক করুন</button>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -317,313 +345,30 @@
 
     <!-- Bootstrap JS CDN (Bundle with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-    <!-- Custom JavaScript for Language Switching and Calendar Functionality -->
+    <script src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Lucide icons
-            lucide.createIcons();
+        function  loadGoogleTranslate(){
+            new google.translate.TranslateElement("language-toggle");
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).on("click", ".viewDetailsBtn", function() {
+            let getId = $(this).data("id");
 
-            // Content object for both English and Bengali
-            const content = {
-                en: {
-                    appName: "AdvocatePro",
-                    nav: {
-                        features: "Features",
-                        roles: "Roles",
-                        contact: "Contact",
-                        profile: "Profile",
-                        logout: "Logout",
-                    },
-                    page: {
-                        backButton: "Back to Dashboard",
-                        heading: "Consultation Calendar",
-                        description: "Manage your schedule for consultations and court hearings.",
-                        calendarOverviewHeading: "Calendar Overview",
-                        daySun: "Sun",
-                        dayMon: "Mon",
-                        dayTue: "Tue",
-                        dayWed: "Wed",
-                        dayThu: "Thu",
-                        dayFri: "Fri",
-                        daySat: "Sat",
-                        addEvent: "Add New Event",
-                        upcomingEventsHeading: "Upcoming Events",
-                        event1Title: "Client Consultation: Farhana Begum",
-                        event1Details: "Date: 2025-07-16, 10:00 AM | Type: Video Call",
-                        manage: "Manage",
-                        event2Title: "Court Hearing: Case #CR2025-001",
-                        event2Details: "Date: 2025-07-20, 02:00 PM | Location: District Judge Court",
-                        event3Title: "Team Meeting: Case Strategy",
-                        event3Details: "Date: 2025-07-25, 11:00 AM | Location: Chamber",
-                        syncCalendar: "Sync Calendar",
-                    },
-                    footer: {
-                        copyright: "Ainprohori. All rights reserved.",
-                        privacyPolicy: "Privacy Policy",
-                        termsOfService: "Terms of Service",
-                        sitemap: "Sitemap",
-                    },
+            $("#eventDetailsContent").html("<p class='text-muted'>Loading...</p>");
+
+            $.ajax({
+                url: "operation/ajax_show_event.php",
+                type: "POST",
+                data: { id: getId },
+                success: function(response) {
+                    $("#eventDetailsContent").html(response);
                 },
-                bn: {
-                    appName: "আইনপ্রহরী",
-                    nav: {
-                        features: "বৈশিষ্ট্যসমূহ",
-                        roles: "ভূমিকা",
-                        contact: "যোগাযোগ",
-                        profile: "প্রোফাইল",
-                        logout: "লগআউট",
-                    },
-                    page: {
-                        backButton: "ড্যাশবোর্ডে ফিরে যান",
-                        heading: "পরামর্শ ক্যালেন্ডার",
-                        description: "আপনার পরামর্শ এবং আদালতের শুনানির সময়সূচী পরিচালনা করুন।",
-                        calendarOverviewHeading: "ক্যালেন্ডার ওভারভিউ",
-                        daySun: "রবি",
-                        dayMon: "সোম",
-                        dayTue: "মঙ্গল",
-                        dayWed: "বুধ",
-                        dayThu: "বৃহস্পতি",
-                        dayFri: "শুক্র",
-                        daySat: "শনি",
-                        addEvent: "নতুন ইভেন্ট যোগ করুন",
-                        upcomingEventsHeading: "আসন্ন ইভেন্ট",
-                        event1Title: "ক্লায়েন্ট পরামর্শ: ফারহানা বেগম",
-                        event1Details: "তারিখ: 2025-07-16, 10:00 AM | ধরন: ভিডিও কল",
-                        manage: "পরিচালনা করুন",
-                        event2Title: "আদালতের শুনানি: মামলা #CR2025-001",
-                        event2Details: "তারিখ: 2025-07-20, 02:00 PM | স্থান: জেলা জজ আদালত",
-                        event3Title: "টিম মিটিং: কেস স্ট্র্যাটেজি",
-                        event3Details: "তারিখ: 2025-07-25, 11:00 AM | স্থান: চেম্বার",
-                        syncCalendar: "ক্যালেন্ডার সিঙ্ক করুন",
-                    },
-                    footer: {
-                        copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                        privacyPolicy: "গোপনীয়তা নীতি",
-                        termsOfService: "পরিষেবার শর্তাবলী",
-                        sitemap: "সাইটম্যাপ",
-                    },
-                },
-            };
-
-            let currentLang = 'en'; // Initial language
-
-            // Get elements that will be updated
-            const elementsToUpdate = {
-                appName: document.getElementById('app-name'),
-                navFeatures: document.getElementById('nav-features'),
-                navRoles: document.getElementById('nav-roles'),
-                navContact: document.getElementById('nav-contact'),
-                navProfile: document.getElementById('nav-profile'),
-                userDisplayName: document.getElementById('user-display-name'),
-                navLogout: document.getElementById('nav-logout'),
-                languageToggle: document.getElementById('language-toggle'),
-                backButtonText: document.getElementById('back-button-text'),
-
-                pageHeading: document.getElementById('page-heading'),
-                pageDescription: document.getElementById('page-description'),
-                calendarOverviewHeading: document.getElementById('calendar-overview-heading'),
-                prevMonthButton: document.getElementById('prev-month-button'),
-                currentMonthYear: document.getElementById('current-month-year'),
-                nextMonthButton: document.getElementById('next-month-button'),
-                daySun: document.getElementById('day-sun'),
-                dayMon: document.getElementById('day-mon'),
-                dayTue: document.getElementById('day-tue'),
-                dayWed: document.getElementById('day-wed'),
-                dayThu: document.getElementById('day-thu'),
-                dayFri: document.getElementById('day-fri'),
-                daySat: document.getElementById('day-sat'),
-                addNewEventButton: document.getElementById('add-new-event-button'),
-                upcomingEventsHeading: document.getElementById('upcoming-events-heading'),
-                event1Title: document.getElementById('event-1').querySelector('h6'),
-                event1Details: document.getElementById('event-1').querySelector('p'),
-                manageEvent1: document.getElementById('manage-event-1'),
-                event2Title: document.getElementById('event-2').querySelector('h6'),
-                event2Details: document.getElementById('event-2').querySelector('p'),
-                manageEvent2: document.getElementById('manage-event-2'),
-                event3Title: document.getElementById('event-3').querySelector('h6'),
-                event3Details: document.getElementById('event-3').querySelector('p'),
-                manageEvent3: document.getElementById('manage-event-3'),
-                syncCalendarButton: document.getElementById('sync-calendar-button'),
-
-                footerCopyright: document.getElementById('footer-copyright'),
-                currentYear: document.getElementById('current-year'),
-                footerPrivacy: document.getElementById('footer-privacy'),
-                footerTerms: document.getElementById('footer-terms'),
-                footerSitemap: document.getElementById('footer-sitemap'),
-            };
-
-            function updateContent() {
-                const t = content[currentLang];
-
-                // Navbar
-                if (elementsToUpdate.appName) elementsToUpdate.appName.textContent = t.appName;
-                if (elementsToUpdate.navFeatures) elementsToUpdate.navFeatures.textContent = t.nav.features;
-                if (elementsToUpdate.navRoles) elementsToUpdate.navRoles.textContent = t.nav.roles;
-                if (elementsToUpdate.navContact) elementsToUpdate.navContact.textContent = t.nav.contact;
-                if (elementsToUpdate.navProfile) elementsToUpdate.navProfile.innerHTML = `<i data-lucide="user" class="me-2"></i> <span id="user-display-name">${t.nav.profile}</span>`;
-                if (elementsToUpdate.navLogout) elementsToUpdate.navLogout.innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t.nav.logout}`;
-                if (elementsToUpdate.languageToggle) elementsToUpdate.languageToggle.textContent = currentLang === 'en' ? 'বাংলা' : 'English';
-                if (elementsToUpdate.backButtonText) elementsToUpdate.backButtonText.textContent = t.page.backButton;
-
-                // Page Content
-                if (elementsToUpdate.pageHeading) elementsToUpdate.pageHeading.textContent = t.page.heading;
-                if (elementsToUpdate.pageDescription) elementsToUpdate.pageDescription.textContent = t.page.description;
-                if (elementsToUpdate.calendarOverviewHeading) elementsToUpdate.calendarOverviewHeading.textContent = t.page.calendarOverviewHeading;
-                if (elementsToUpdate.daySun) elementsToUpdate.daySun.textContent = t.page.daySun;
-                if (elementsToUpdate.dayMon) elementsToUpdate.dayMon.textContent = t.page.dayMon;
-                if (elementsToUpdate.dayTue) elementsToUpdate.dayTue.textContent = t.page.dayTue;
-                if (elementsToUpdate.dayWed) elementsToUpdate.dayWed.textContent = t.page.dayWed;
-                if (elementsToUpdate.dayThu) elementsToUpdate.dayThu.textContent = t.page.dayThu;
-                if (elementsToUpdate.dayFri) elementsToUpdate.dayFri.textContent = t.page.dayFri;
-                if (elementsToUpdate.daySat) elementsToUpdate.daySat.textContent = t.page.daySat;
-                if (elementsToUpdate.addNewEventButton) elementsToUpdate.addNewEventButton.innerHTML = `<i data-lucide="plus-circle" class="me-2"></i> ${t.page.addEvent}`;
-                if (elementsToUpdate.upcomingEventsHeading) elementsToUpdate.upcomingEventsHeading.textContent = t.page.upcomingEventsHeading;
-                if (elementsToUpdate.event1Title) elementsToUpdate.event1Title.textContent = t.page.event1Title;
-                if (elementsToUpdate.event1Details) elementsToUpdate.event1Details.textContent = t.page.event1Details;
-                if (elementsToUpdate.manageEvent1) elementsToUpdate.manageEvent1.innerHTML = `<i data-lucide="edit" class="me-1"></i> ${t.page.manage}`;
-                if (elementsToUpdate.event2Title) elementsToUpdate.event2Title.textContent = t.page.event2Title;
-                if (elementsToUpdate.event2Details) elementsToUpdate.event2Details.textContent = t.page.event2Details;
-                if (elementsToUpdate.manageEvent2) elementsToUpdate.manageEvent2.innerHTML = `<i data-lucide="edit" class="me-1"></i> ${t.page.manage}`;
-                if (elementsToUpdate.event3Title) elementsToUpdate.event3Title.textContent = t.page.event3Title;
-                if (elementsToUpdate.event3Details) elementsToUpdate.event3Details.textContent = t.page.event3Details;
-                if (elementsToUpdate.manageEvent3) elementsToUpdate.manageEvent3.innerHTML = `<i data-lucide="edit" class="me-1"></i> ${t.page.manage}`;
-                if (elementsToUpdate.syncCalendarButton) elementsToUpdate.syncCalendarButton.innerHTML = `<i data-lucide="refresh-cw" class="me-2"></i> ${t.page.syncCalendar}`;
-
-                // Footer
-                if (elementsToUpdate.currentYear) elementsToUpdate.currentYear.textContent = new Date().getFullYear();
-                if (elementsToUpdate.footerCopyright) elementsToUpdate.footerCopyright.textContent = `© ${new Date().getFullYear()} ${t.footer.copyright}`;
-                if (elementsToUpdate.footerPrivacy) elementsToUpdate.footerPrivacy.textContent = t.footer.privacyPolicy;
-                if (elementsToUpdate.footerTerms) elementsToUpdate.footerTerms.textContent = t.footer.termsOfService;
-                if (elementsToUpdate.footerSitemap) elementsToUpdate.footerSitemap.textContent = t.footer.sitemap;
-
-                lucide.createIcons(); // Re-create Lucide icons after content update
-            }
-
-            // Placeholder for User Name (in a real app, this would come from authentication)
-            function setUserName() {
-                const dummyUserName = "অ্যাডভোকেট"; // Example dummy name (Bengali)
-                if (elementsToUpdate.userDisplayName) {
-                    elementsToUpdate.userDisplayName.textContent = dummyUserName;
+                error: function() {
+                    $("#eventDetailsContent").html("<p class='text-danger'>Error loading details.</p>");
                 }
-            }
-
-            // Event listener for language toggle button
-            const languageToggleBtn = document.getElementById('language-toggle');
-            if (languageToggleBtn) {
-                languageToggleBtn.addEventListener('click', () => {
-                    currentLang = currentLang === 'en' ? 'bn' : 'en';
-                    document.documentElement.lang = currentLang; // Update html lang attribute
-                    updateContent();
-                    renderCalendar(); // Re-render calendar after language change
-                });
-            }
-
-            // Initial content load and set dummy user data
-            updateContent();
-            setUserName();
-
-            // Add back button functionality
-            document.getElementById('back-to-dashboard').addEventListener('click', () => {
-                history.back();
             });
-
-            // Calendar rendering logic
-            const calendarGrid = document.querySelector('.calendar-grid');
-            let currentDate = new Date(); // Current date for calendar
-            let currentMonth = currentDate.getMonth();
-            let currentYear = currentDate.getFullYear();
-
-            const events = {
-                // Example events: Year-Month-Day: [{title, details}]
-                "2025-6-16": [{ title: "Client Consultation: Farhana Begum", details: "10:00 AM | Video Call" }],
-                "2025-6-20": [{ title: "Court Hearing: Case #CR2025-001", details: "02:00 PM | District Judge Court" }],
-                "2025-6-25": [{ title: "Team Meeting: Case Strategy", details: "11:00 AM | Chamber" }]
-            };
-
-            function renderCalendar() {
-                calendarGrid.innerHTML = `
-                    <div class="calendar-header" id="day-sun">${content[currentLang].page.daySun}</div>
-                    <div class="calendar-header" id="day-mon">${content[currentLang].page.dayMon}</div>
-                    <div class="calendar-header" id="day-tue">${content[currentLang].page.dayTue}</div>
-                    <div class="calendar-header" id="day-wed">${content[currentLang].page.dayWed}</div>
-                    <div class="calendar-header" id="day-thu">${content[currentLang].page.dayThu}</div>
-                    <div class="calendar-header" id="day-fri">${content[currentLang].page.dayFri}</div>
-                    <div class="calendar-header" id="day-sat">${content[currentLang].page.daySat}</div>
-                `;
-
-                const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-                const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
-                const numDaysInMonth = lastDayOfMonth.getDate();
-                const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 for Sunday, 1 for Monday...
-
-                // Fill leading empty days
-                for (let i = 0; i < firstDayOfWeek; i++) {
-                    const emptyDay = document.createElement('div');
-                    emptyDay.classList.add('calendar-day');
-                    calendarGrid.appendChild(emptyDay);
-                }
-
-                // Fill days of the month
-                for (let day = 1; day <= numDaysInMonth; day++) {
-                    const dayElement = document.createElement('div');
-                    dayElement.classList.add('calendar-day');
-                    dayElement.textContent = day;
-
-                    const fullDate = new Date(currentYear, currentMonth, day);
-                    const formattedDate = `${fullDate.getFullYear()}-${fullDate.getMonth()}-${fullDate.getDate()}`;
-
-                    if (events[formattedDate]) {
-                        dayElement.classList.add('has-event');
-                        const eventIndicator = document.createElement('div');
-                        eventIndicator.classList.add('event-indicator');
-                        dayElement.appendChild(eventIndicator);
-                    }
-
-                    if (day === currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear()) {
-                        dayElement.classList.add('current-day');
-                    }
-
-                    dayElement.addEventListener('click', () => {
-                        alert(`Clicked on ${day}/${currentMonth + 1}/${currentYear}. Events: ${events[formattedDate] ? events[formattedDate].map(e => e.title).join(', ') : 'None'}`);
-                    });
-
-                    calendarGrid.appendChild(dayElement);
-                }
-
-                elementsToUpdate.currentMonthYear.textContent = new Date(currentYear, currentMonth).toLocaleString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { month: 'long', year: 'numeric' });
-            }
-
-            // Navigation for calendar
-            elementsToUpdate.prevMonthButton.addEventListener('click', () => {
-                currentMonth--;
-                if (currentMonth < 0) {
-                    currentMonth = 11;
-                    currentYear--;
-                }
-                renderCalendar();
-            });
-
-            elementsToUpdate.nextMonthButton.addEventListener('click', () => {
-                currentMonth++;
-                if (currentMonth > 11) {
-                    currentMonth = 0;
-                    currentYear++;
-                }
-                renderCalendar();
-            });
-
-            // Initial render
-            renderCalendar();
-
-            // Dummy functionality for buttons
-            document.getElementById('add-new-event-button').addEventListener('click', () => {
-                alert('Opening form to add new event! (Placeholder)');
-            });
-            document.getElementById('manage-event-1').addEventListener('click', () => alert('Managing Client Consultation with Farhana Begum! (Placeholder)'));
-            document.getElementById('manage-event-2').addEventListener('click', () => alert('Managing Court Hearing for Case #CR2025-001! (Placeholder)'));
-            document.getElementById('manage-event-3').addEventListener('click', () => alert('Managing Team Meeting! (Placeholder)'));
-            document.getElementById('sync-calendar-button').addEventListener('click', () => alert('Syncing calendar with external services! (Placeholder)'));
         });
     </script>
 </body>
