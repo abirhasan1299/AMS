@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -170,7 +173,12 @@
     </style>
 </head>
 <body>
-
+<script src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+<script>
+    function  loadGoogleTranslate(){
+        new google.translate.TranslateElement("toggle");
+    }
+</script>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
         <div class="container">
@@ -208,7 +216,7 @@
                         </a>
                     </li>
                     <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
+                        <div id="toggle"></div>
                     </li>
                 </ul>
             </div>
@@ -217,6 +225,7 @@
 
     <!-- Main Content Section -->
     <section class="main-content-container">
+        <?php include 'digging/add-file.php' ; ?>
         <div class="container">
             <div class="info-card text-center">
                 <h1 class="display-5 fw-bold mb-3" id="page-heading">নথি জমা</h1>
@@ -227,37 +236,47 @@
                 <div class="col-lg-12">
                     <div class="info-card">
                         <h3 class="section-header" id="upload-document-heading">নথি আপলোড করুন</h3>
-                        <form id="document-upload-form">
+                        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST" autocomplete="off" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="case-id-select" class="form-label" id="case-id-label">মামলা আইডি নির্বাচন করুন:</label>
-                                <select class="form-select" id="case-id-select" required>
-                                    <option value="" id="select-case-id">একটি মামলা নির্বাচন করুন</option>
-                                    <option value="CR2025-001" id="opt-case-1">CR2025-001: জন বনাম রাজ্য</option>
-                                    <option value="CIV2025-005" id="opt-case-2">CIV2025-005: স্মিথ বনাম জোন্স</option>
+                                <select class="form-select" name="case_id" id="case-id-select" required>
+                                    <option selected disabled>Choose Case</option>
+                                    <?php
+                                    include '../configuration/config.php';
+                                    $sql = "SELECT * FROM cases WHERE user_id={$_SESSION['id']}";
+                                    $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                    ?>
+                                    <option value="<?php echo $row['id'] ?>" id="select-case-id">
+                                        <?php echo $row['title'] ?> - <?php echo $row['client_name'] ?>
+                                    </option>
+
+                                    <?php } ?>
+
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="document-type" class="form-label" id="document-type-label">নথির ধরন:</label>
-                                <select class="form-select" id="document-type" required>
+                                <select class="form-select" name="case_type" id="document-type" required>
                                     <option value="" id="select-document-type">নথির ধরন নির্বাচন করুন</option>
-                                    <option value="petition" id="opt-petition">পিটিশন</option>
-                                    <option value="affidavit" id="opt-affidavit">হলফনামা</option>
-                                    <option value="evidence" id="opt-evidence">প্রমাণ</option>
-                                    <option value="legal-notice" id="opt-legal-notice">আইনি নোটিশ</option>
-                                    <option value="other" id="opt-other">অন্যান্য</option>
+                                    <option value="petition" >পিটিশন</option>
+                                    <option value="affidavit" >হলফনামা</option>
+                                    <option value="evidence">প্রমাণ</option>
+                                    <option value="legal-notice">আইনি নোটিশ</option>
+                                    <option value="other" >অন্যান্য</option>
                                 </select>
                             </div>
                             <div class="mb-3">
                                 <label for="document-file" class="form-label" id="document-file-label">নথি ফাইল:</label>
-                                <input type="file" class="form-control" id="document-file" accept=".pdf,.doc,.docx,.jpg,.png" required>
+                                <input type="file" name="file" class="form-control" id="document-file" accept=".pdf,.doc,.docx,.jpg,.png" required>
                                 <small class="form-text text-muted" id="file-format-hint">অনুমোদিত ফরম্যাট: PDF, DOCX, JPG, PNG।</small>
                             </div>
                             <div class="mb-4">
                                 <label for="document-description" class="form-label" id="document-description-label">সংক্ষিপ্ত বিবরণ (ঐচ্ছিক):</label>
-                                <textarea class="form-control" id="document-description" rows="3" placeholder="নথি সম্পর্কে একটি সংক্ষিপ্ত বিবরণ দিন"></textarea>
+                                <textarea name="des" class="form-control" id="document-description" rows="3" placeholder="নথি সম্পর্কে একটি সংক্ষিপ্ত বিবরণ দিন"></textarea>
                             </div>
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-primary-custom" id="upload-button"><i data-lucide="upload" class="me-2"></i> নথি আপলোড করুন</button>
+                                <button type="submit" name="submit" class="btn btn-primary-custom" id="upload-button"><i data-lucide="upload" class="me-2"></i> নথি আপলোড করুন</button>
                             </div>
                         </form>
                     </div>
@@ -282,283 +301,5 @@
     <!-- Bootstrap JS CDN (Bundle with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <!-- Custom JavaScript for Language Switching and Functionality -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Lucide icons
-            lucide.createIcons();
-
-            // Content object for both English and Bengali
-            const content = {
-                en: {
-                    appName: "AdvocatePro",
-                    nav: {
-                        features: "Features",
-                        roles: "Roles",
-                        contact: "Contact",
-                        profile: "Profile",
-                        logout: "Logout",
-                    },
-                    page: {
-                        backButton: "Back to Dashboard",
-                        heading: "Document Filing",
-                        description: "Upload, manage, and submit legal documents for your cases.",
-                        uploadDocumentHeading: "Upload Document",
-                        caseIdLabel: "Select Case ID:",
-                        selectCaseId: "Select a Case",
-                        optCase1: "CR2025-001: John vs. State",
-                        optCase2: "CIV2025-005: Smith vs. Jones",
-                        documentTypeLabel: "Document Type:",
-                        selectDocumentType: "Select Document Type",
-                        optPetition: "Petition",
-                        optAffidavit: "Affidavit",
-                        optEvidence: "Evidence",
-                        optLegalNotice: "Legal Notice",
-                        optOther: "Other",
-                        documentFileLabel: "Document File:",
-                        fileFormatHint: "Allowed formats: PDF, DOCX, JPG, PNG.",
-                        documentDescriptionLabel: "Brief Description (Optional):",
-                        documentDescriptionPlaceholder: "Provide a brief description about the document",
-                        uploadButton: "Upload Document",
-                        uploadedDocumentsHeading: "Uploaded Documents",
-                        doc1Title: "Case #CR2025-001: Bail Application",
-                        doc1Details: "Uploaded: 2025-07-10 | Type: Petition",
-                        view: "View",
-                        delete: "Delete",
-                        doc2Title: "Case #CIV2025-005: Witness Photo",
-                        doc2Details: "Uploaded: 2025-07-08 | Type: Evidence",
-                        loadMoreDocuments: "Load More Documents",
-                    },
-                    footer: {
-                        copyright: "Ainprohori. All rights reserved.",
-                        privacyPolicy: "Privacy Policy",
-                        termsOfService: "Terms of Service",
-                        sitemap: "Sitemap",
-                    },
-                },
-                bn: {
-                    appName: "আইনপ্রহরী",
-                    nav: {
-                        features: "বৈশিষ্ট্যসমূহ",
-                        roles: "ভূমিকা",
-                        contact: "যোগাযোগ",
-                        profile: "প্রোফাইল",
-                        logout: "লগআউট",
-                    },
-                    page: {
-                        backButton: "ড্যাশবোর্ডে ফিরে যান",
-                        heading: "নথি জমা",
-                        description: "আপনার মামলার জন্য আইনি নথি আপলোড, পরিচালনা এবং জমা দিন।",
-                        uploadDocumentHeading: "নথি আপলোড করুন",
-                        caseIdLabel: "মামলা আইডি নির্বাচন করুন:",
-                        selectCaseId: "একটি মামলা নির্বাচন করুন",
-                        optCase1: "CR2025-001: জন বনাম রাজ্য",
-                        optCase2: "CIV2025-005: স্মিথ বনাম জোন্স",
-                        documentTypeLabel: "নথির ধরন:",
-                        selectDocumentType: "নথির ধরন নির্বাচন করুন",
-                        optPetition: "পিটিশন",
-                        optAffidavit: "হলফনামা",
-                        optEvidence: "প্রমাণ",
-                        optLegalNotice: "আইনি নোটিশ",
-                        optOther: "অন্যান্য",
-                        documentFileLabel: "নথি ফাইল:",
-                        fileFormatHint: "অনুমোদিত ফরম্যাট: PDF, DOCX, JPG, PNG।",
-                        documentDescriptionLabel: "সংক্ষিপ্ত বিবরণ (ঐচ্ছিক):",
-                        documentDescriptionPlaceholder: "নথি সম্পর্কে একটি সংক্ষিপ্ত বিবরণ দিন",
-                        uploadButton: "নথি আপলোড করুন",
-                        uploadedDocumentsHeading: "আপলোড করা নথি",
-                        doc1Title: "মামলা #CR2025-001: জামিন আবেদন",
-                        doc1Details: "আপলোড করা হয়েছে: 2025-07-10 | ধরন: পিটিশন",
-                        view: "দেখুন",
-                        delete: "মুছে ফেলুন",
-                        doc2Title: "মামলা #CIV2025-005: সাক্ষীর ছবি",
-                        doc2Details: "আপলোড করা হয়েছে: 2025-07-08 | ধরন: প্রমাণ",
-                        loadMoreDocuments: "আরও নথি লোড করুন",
-                    },
-                    footer: {
-                        copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                        privacyPolicy: "গোপনীয়তা নীতি",
-                        termsOfService: "পরিষেবার শর্তাবলী",
-                        sitemap: "সাইটম্যাপ",
-                    },
-                },
-            };
-
-            let currentLang = 'en'; // Initial language
-
-            // Get elements that will be updated
-            const elementsToUpdate = {
-                appName: document.getElementById('app-name'),
-                navFeatures: document.getElementById('nav-features'),
-                navRoles: document.getElementById('nav-roles'),
-                navContact: document.getElementById('nav-contact'),
-                navProfile: document.getElementById('nav-profile'),
-                userDisplayName: document.getElementById('user-display-name'),
-                navLogout: document.getElementById('nav-logout'),
-                languageToggle: document.getElementById('language-toggle'),
-                backButtonText: document.getElementById('back-button-text'),
-
-                pageHeading: document.getElementById('page-heading'),
-                pageDescription: document.getElementById('page-description'),
-                uploadDocumentHeading: document.getElementById('upload-document-heading'),
-                caseIdLabel: document.getElementById('case-id-label'),
-                caseIdSelect: document.getElementById('case-id-select'),
-                selectCaseId: document.getElementById('select-case-id'),
-                optCase1: document.getElementById('opt-case-1'),
-                optCase2: document.getElementById('opt-case-2'),
-                documentTypeLabel: document.getElementById('document-type-label'),
-                documentType: document.getElementById('document-type'),
-                selectDocumentType: document.getElementById('select-document-type'),
-                optPetition: document.getElementById('opt-petition'),
-                optAffidavit: document.getElementById('opt-affidavit'),
-                optEvidence: document.getElementById('opt-evidence'),
-                optLegalNotice: document.getElementById('opt-legal-notice'),
-                optOther: document.getElementById('opt-other'),
-                documentFileLabel: document.getElementById('document-file-label'),
-                documentFileInput: document.getElementById('document-file'),
-                fileFormatHint: document.getElementById('file-format-hint'),
-                documentDescriptionLabel: document.getElementById('document-description-label'),
-                documentDescriptionTextarea: document.getElementById('document-description'),
-                uploadButton: document.getElementById('upload-button'),
-                uploadedDocumentsHeading: document.getElementById('uploaded-documents-heading'),
-                doc1Title: document.getElementById('doc-1').querySelector('h6'),
-                doc1Details: document.getElementById('doc-1').querySelector('p'),
-                viewDoc1: document.getElementById('view-doc-1'),
-                deleteDoc1: document.getElementById('delete-doc-1'),
-                doc2Title: document.getElementById('doc-2').querySelector('h6'),
-                doc2Details: document.getElementById('doc-2').querySelector('p'),
-                viewDoc2: document.getElementById('view-doc-2'),
-                deleteDoc2: document.getElementById('delete-doc-2'),
-                loadMoreDocuments: document.getElementById('load-more-documents'),
-
-                footerCopyright: document.getElementById('footer-copyright'),
-                currentYear: document.getElementById('current-year'),
-                footerPrivacy: document.getElementById('footer-privacy'),
-                footerTerms: document.getElementById('footer-terms'),
-                footerSitemap: document.getElementById('footer-sitemap'),
-            };
-
-            function updateContent() {
-                const t = content[currentLang];
-
-                // Navbar
-                if (elementsToUpdate.appName) elementsToUpdate.appName.textContent = t.appName;
-                if (elementsToUpdate.navFeatures) elementsToUpdate.navFeatures.textContent = t.nav.features;
-                if (elementsToUpdate.navRoles) elementsToUpdate.navRoles.textContent = t.nav.roles;
-                if (elementsToUpdate.navContact) elementsToUpdate.navContact.textContent = t.nav.contact;
-                if (elementsToUpdate.navProfile) elementsToUpdate.navProfile.innerHTML = `<i data-lucide="user" class="me-2"></i> <span id="user-display-name">${t.nav.profile}</span>`;
-                if (elementsToUpdate.navLogout) elementsToUpdate.navLogout.innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t.nav.logout}`;
-                if (elementsToUpdate.languageToggle) elementsToUpdate.languageToggle.textContent = currentLang === 'en' ? 'বাংলা' : 'English';
-                if (elementsToUpdate.backButtonText) elementsToUpdate.backButtonText.textContent = t.page.backButton;
-
-                // Page Content
-                if (elementsToUpdate.pageHeading) elementsToUpdate.pageHeading.textContent = t.page.heading;
-                if (elementsToUpdate.pageDescription) elementsToUpdate.pageDescription.textContent = t.page.description;
-                if (elementsToUpdate.uploadDocumentHeading) elementsToUpdate.uploadDocumentHeading.textContent = t.page.uploadDocumentHeading;
-                if (elementsToUpdate.caseIdLabel) elementsToUpdate.caseIdLabel.textContent = t.page.caseIdLabel;
-                if (elementsToUpdate.selectCaseId) elementsToUpdate.selectCaseId.textContent = t.page.selectCaseId;
-                if (elementsToUpdate.optCase1) elementsToUpdate.optCase1.textContent = t.page.optCase1;
-                if (elementsToUpdate.optCase2) elementsToUpdate.optCase2.textContent = t.page.optCase2;
-                if (elementsToUpdate.documentTypeLabel) elementsToUpdate.documentTypeLabel.textContent = t.page.documentTypeLabel;
-                if (elementsToUpdate.selectDocumentType) elementsToUpdate.selectDocumentType.textContent = t.page.selectDocumentType;
-                if (elementsToUpdate.optPetition) elementsToUpdate.optPetition.textContent = t.page.optPetition;
-                if (elementsToUpdate.optAffidavit) elementsToUpdate.optAffidavit.textContent = t.page.optAffidavit;
-                if (elementsToUpdate.optEvidence) elementsToUpdate.optEvidence.textContent = t.page.optEvidence;
-                if (elementsToUpdate.optLegalNotice) elementsToUpdate.optLegalNotice.textContent = t.page.optLegalNotice;
-                if (elementsToUpdate.optOther) elementsToUpdate.optOther.textContent = t.page.optOther;
-                if (elementsToUpdate.documentFileLabel) elementsToUpdate.documentFileLabel.textContent = t.page.documentFileLabel;
-                if (elementsToUpdate.fileFormatHint) elementsToUpdate.fileFormatHint.textContent = t.page.fileFormatHint;
-                if (elementsToUpdate.documentDescriptionLabel) elementsToUpdate.documentDescriptionLabel.textContent = t.page.documentDescriptionLabel;
-                if (elementsToUpdate.documentDescriptionTextarea) elementsToUpdate.documentDescriptionTextarea.placeholder = t.page.documentDescriptionPlaceholder;
-                if (elementsToUpdate.uploadButton) elementsToUpdate.uploadButton.innerHTML = `<i data-lucide="upload" class="me-2"></i> ${t.page.uploadButton}`;
-                if (elementsToUpdate.uploadedDocumentsHeading) elementsToUpdate.uploadedDocumentsHeading.textContent = t.page.uploadedDocumentsHeading;
-                if (elementsToUpdate.doc1Title) elementsToUpdate.doc1Title.textContent = t.page.doc1Title;
-                if (elementsToUpdate.doc1Details) elementsToUpdate.doc1Details.textContent = t.page.doc1Details;
-                if (elementsToUpdate.viewDoc1) elementsToUpdate.viewDoc1.innerHTML = `<i data-lucide="eye" class="me-1"></i> ${t.page.view}`;
-                if (elementsToUpdate.deleteDoc1) elementsToUpdate.deleteDoc1.innerHTML = `<i data-lucide="trash-2" class="me-1"></i> ${t.page.delete}`;
-                if (elementsToUpdate.doc2Title) elementsToUpdate.doc2Title.textContent = t.page.doc2Title;
-                if (elementsToUpdate.doc2Details) elementsToUpdate.doc2Details.textContent = t.page.doc2Details;
-                if (elementsToUpdate.viewDoc2) elementsToUpdate.viewDoc2.innerHTML = `<i data-lucide="eye" class="me-1"></i> ${t.page.view}`;
-                if (elementsToUpdate.deleteDoc2) elementsToUpdate.deleteDoc2.innerHTML = `<i data-lucide="trash-2" class="me-1"></i> ${t.page.delete}`;
-                if (elementsToUpdate.loadMoreDocuments) elementsToUpdate.loadMoreDocuments.innerHTML = `<i data-lucide="refresh-cw" class="me-2"></i> ${t.page.loadMoreDocuments}`;
-
-                // Footer
-                if (elementsToUpdate.currentYear) elementsToUpdate.currentYear.textContent = new Date().getFullYear();
-                if (elementsToUpdate.footerCopyright) elementsToUpdate.footerCopyright.textContent = `© ${new Date().getFullYear()} ${t.footer.copyright}`;
-                if (elementsToUpdate.footerPrivacy) elementsToUpdate.footerPrivacy.textContent = t.footer.privacyPolicy;
-                if (elementsToUpdate.footerTerms) elementsToUpdate.footerTerms.textContent = t.footer.termsOfService;
-                if (elementsToUpdate.footerSitemap) elementsToUpdate.footerSitemap.textContent = t.footer.sitemap;
-
-                lucide.createIcons(); // Re-create Lucide icons after content update
-            }
-
-            // Placeholder for User Name (in a real app, this would come from authentication)
-            function setUserName() {
-                const dummyUserName = "অ্যাডভোকেট"; // Example dummy name (Bengali)
-                if (elementsToUpdate.userDisplayName) {
-                    elementsToUpdate.userDisplayName.textContent = dummyUserName;
-                }
-            }
-
-            // Event listener for language toggle button
-            const languageToggleBtn = document.getElementById('language-toggle');
-            if (languageToggleBtn) {
-                languageToggleBtn.addEventListener('click', () => {
-                    currentLang = currentLang === 'en' ? 'bn' : 'en';
-                    document.documentElement.lang = currentLang; // Update html lang attribute
-                    updateContent();
-                });
-            }
-
-            // Initial content load and set dummy user data
-            updateContent();
-            setUserName();
-
-            // Add back button functionality
-            document.getElementById('back-to-dashboard').addEventListener('click', () => {
-                history.back();
-            });
-
-            // Dummy document upload functionality
-            document.getElementById('document-upload-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const caseId = elementsToUpdate.caseIdSelect.value;
-                const docType = elementsToUpdate.documentType.value;
-                const docFile = elementsToUpdate.documentFileInput.files[0];
-                const docDescription = elementsToUpdate.documentDescriptionTextarea.value;
-
-                if (docFile) {
-                    alert(`Uploading document for Case ID: ${caseId}\nType: ${docType}\nFile: ${docFile.name}\nDescription: ${docDescription || 'N/A'}\n\n(Placeholder for actual file upload and backend processing)`);
-                    this.reset(); // Clear form
-                } else {
-                    alert('Please select a file to upload.');
-                }
-            });
-
-            // Dummy view document functionality
-            document.querySelectorAll('.view-doc-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const docId = this.dataset.docId;
-                    alert(`Viewing document ${docId}! (Placeholder for opening document viewer)`);
-                });
-            });
-
-            // Dummy delete document functionality
-            document.querySelectorAll('.delete-doc-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const docId = this.dataset.docId;
-                    if (confirm(`Are you sure you want to delete document ${docId}?`)) {
-                        alert(`Deleting document ${docId}! (Placeholder for backend deletion)`);
-                        document.getElementById(docId).remove(); // Remove from UI
-                    }
-                });
-            });
-
-            // Dummy load more documents functionality
-            document.getElementById('load-more-documents').addEventListener('click', () => {
-                alert('Loading more documents... (Placeholder action)');
-            });
-        });
-    </script>
 </body>
 </html>

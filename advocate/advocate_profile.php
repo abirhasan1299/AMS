@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -185,7 +188,87 @@
     </style>
 </head>
 <body>
+<!--update modal-->
+<!-- Modal -->
+<div class="modal fade" id="profileModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="update_profile.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
+                <div class="modal-body">
+                    <!-- Job Post -->
+                    <div class="mb-3">
+                        <label class="form-label">Job Post</label>
+                        <input type="text" name="job_post" class="form-control" placeholder="Enter your job title" required>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea name="address" class="form-control" rows="2" placeholder="Enter your address"></textarea>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="mb-3">
+                        <label class="form-label">Contact Number</label>
+                        <input type="text" name="contact" class="form-control" placeholder="Enter contact number">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="Enter your email">
+                    </div>
+
+                    <!-- Meet Link -->
+                    <div class="mb-3">
+                        <label class="form-label">Meeting Link</label>
+                        <input type="url" name="meet_link" class="form-control" placeholder="Enter meeting link">
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="mb-3">
+                        <label class="form-label">Profile Image</label>
+                        <input type="file" name="profile_img" class="form-control" accept="image/*">
+                    </div>
+
+                    <!-- Specialization -->
+                    <div class="mb-3">
+                        <label class="form-label">Specialization</label>
+                        <select name="specialization" class="form-select">
+                            <option value="" selected disabled>Choose specialization</option>
+                            <option value="criminal-law">Criminal Law</option>
+                            <option value="family-law">Family Law</option>
+                            <option value="corporate-law">Corporate Law</option>
+                            <option value="civil-law">Civil Law</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Language -->
+                    <div class="mb-3">
+                        <label class="form-label">Languages</label>
+                        <input type="text" name="language" class="form-control" placeholder="e.g. English, Bengali, Hindi">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" name="update" class="btn btn-success">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+<script>
+    function  loadGoogleTranslate(){
+        new google.translate.TranslateElement("toggle");
+    }
+</script>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
         <div class="container">
@@ -223,7 +306,7 @@
                         </a>
                     </li>
                     <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
+                        <div  id="toggle"></div>
                     </li>
                 </ul>
             </div>
@@ -233,9 +316,19 @@
     <!-- Profile Content Section -->
     <section class="profile-container">
         <div class="container">
+            <?php
+            include '../configuration/config.php';
+            $sql = "SELECT * FROM profile WHERE user_id = {$_SESSION['user_id']}";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+
+            ?>
             <div class="profile-card">
                 <img src="https://placehold.co/150x150/ACC8E6/000000?text=Profile" alt="Profile Photo" class="profile-photo">
-                <h2 class="display-6 fw-bold mb-3" id="profile-name">অ্যাডভোকেট জাহিদ হাসান</h2>
+                <h2 class="display-6 fw-bold mb-3" id="profile-name">
+
+                </h2>
                 <p class="lead text-muted" id="profile-designation">সিনিয়র অ্যাডভোকেট</p>
 
                 <div class="profile-info">
@@ -246,9 +339,14 @@
                 </div>
 
                 <button class="btn btn-edit-profile" id="edit-profile-button">
-                    <i data-lucide="edit" class="me-2"></i> <span id="edit-profile-text">প্রোফাইল সম্পাদনা করুন</span>
+                    <i data-lucide="edit" class="me-2"></i> <span id="edit-profile-text" data-bs-toggle="modal" data-bs-target="#profileModal">Edit Profile</span>
                 </button>
             </div>
+            <?php }
+            }else{
+
+            }
+            ?>
         </div>
     </section>
 
@@ -269,163 +367,6 @@
     <!-- Bootstrap JS CDN (Bundle with Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-    <!-- Custom JavaScript for Language Switching -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Lucide icons
-            lucide.createIcons();
 
-            // Content object for both English and Bengali
-            const content = {
-                en: {
-                    appName: "AdvocatePro",
-                    nav: {
-                        features: "Features",
-                        roles: "Roles",
-                        contact: "Contact",
-                        profile: "Profile",
-                        logout: "Logout",
-                    },
-                    profilePage: {
-                        profileName: "Advocate Zahid Hasan",
-                        profileDesignation: "Senior Advocate",
-                        personalInfoHeading: "Personal Information",
-                        labelAddress: "Address:",
-                        profileAddress: "House #12, Road #3, Dhanmondi, Dhaka-1205",
-                        labelContact: "Contact No:",
-                        profileContact: "+880 1712 345678",
-                        labelEmail: "Email:",
-                        profileEmail: "zahid.hasan@example.com",
-                        editProfileText: "Edit Profile"
-                    },
-                    footer: {
-                        copyright: "Ainprohori. All rights reserved.",
-                        privacyPolicy: "Privacy Policy",
-                        termsOfService: "Terms of Service",
-                        sitemap: "Sitemap",
-                    },
-                },
-                bn: {
-                    appName: "আইনপ্রহরী",
-                    nav: {
-                        features: "বৈশিষ্ট্যসমূহ",
-                        roles: "ভূমিকা",
-                        contact: "যোগাযোগ",
-                        profile: "প্রোফাইল",
-                        logout: "লগআউট",
-                    },
-                    profilePage: {
-                        profileName: "অ্যাডভোকেট জাহিদ হাসান",
-                        profileDesignation: "সিনিয়র অ্যাডভোকেট",
-                        personalInfoHeading: "ব্যক্তিগত তথ্য",
-                        labelAddress: "ঠিকানা:",
-                        profileAddress: "বাড়ি #১২, রোড #৩, ধানমন্ডি, ঢাকা-১২০৫",
-                        labelContact: "যোগাযোগ নং:",
-                        profileContact: "+880 1712 345678",
-                        labelEmail: "ইমেইল:",
-                        profileEmail: "zahid.hasan@example.com",
-                        editProfileText: "প্রোফাইল সম্পাদনা করুন"
-                    },
-                    footer: {
-                        copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                        privacyPolicy: "গোপনীয়তা নীতি",
-                        termsOfService: "পরিষেবার শর্তাবলী",
-                        sitemap: "সাইটম্যাপ",
-                    },
-                },
-            };
-
-            let currentLang = 'en'; // Initial language
-
-            // Get elements that will be updated
-            const elementsToUpdate = {
-                appName: document.getElementById('app-name'),
-                navFeatures: document.getElementById('nav-features'),
-                navRoles: document.getElementById('nav-roles'),
-                navContact: document.getElementById('nav-contact'),
-                navProfile: document.getElementById('nav-profile'),
-                userDisplayName: document.getElementById('user-display-name'),
-                navLogout: document.getElementById('nav-logout'),
-                languageToggle: document.getElementById('language-toggle'),
-
-                profileName: document.getElementById('profile-name'),
-                profileDesignation: document.getElementById('profile-designation'),
-                personalInfoHeading: document.getElementById('personal-info-heading'),
-                labelAddress: document.getElementById('label-address'),
-                profileAddress: document.getElementById('profile-address'),
-                labelContact: document.getElementById('label-contact'),
-                profileContact: document.getElementById('profile-contact'),
-                labelEmail: document.getElementById('label-email'),
-                profileEmail: document.getElementById('profile-email'),
-                editProfileText: document.getElementById('edit-profile-text'),
-
-                footerCopyright: document.getElementById('footer-copyright'),
-                currentYear: document.getElementById('current-year'),
-                footerPrivacy: document.getElementById('footer-privacy'),
-                footerTerms: document.getElementById('footer-terms'),
-                footerSitemap: document.getElementById('footer-sitemap'),
-            };
-
-            function updateContent() {
-                const t = content[currentLang];
-
-                // Navbar
-                if (elementsToUpdate.appName) elementsToUpdate.appName.textContent = t.appName;
-                if (elementsToUpdate.navFeatures) elementsToUpdate.navFeatures.textContent = t.nav.features;
-                if (elementsToUpdate.navRoles) elementsToUpdate.navRoles.textContent = t.nav.roles;
-                if (elementsToUpdate.navContact) elementsToUpdate.navContact.textContent = t.nav.contact;
-                if (elementsToUpdate.navProfile) elementsToUpdate.navProfile.innerHTML = `<i data-lucide="user" class="me-2"></i> <span id="user-display-name">${t.nav.profile}</span>`;
-                if (elementsToUpdate.navLogout) elementsToUpdate.navLogout.innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t.nav.logout}`;
-                if (elementsToUpdate.languageToggle) elementsToUpdate.languageToggle.textContent = currentLang === 'en' ? 'বাংলা' : 'English';
-
-                // Profile Page Content
-                if (elementsToUpdate.profileName) elementsToUpdate.profileName.textContent = t.profilePage.profileName;
-                if (elementsToUpdate.profileDesignation) elementsToUpdate.profileDesignation.textContent = t.profilePage.profileDesignation;
-                if (elementsToUpdate.personalInfoHeading) elementsToUpdate.personalInfoHeading.textContent = t.profilePage.personalInfoHeading;
-                if (elementsToUpdate.labelAddress) elementsToUpdate.labelAddress.textContent = t.profilePage.labelAddress;
-                if (elementsToUpdate.profileAddress) elementsToUpdate.profileAddress.textContent = t.profilePage.profileAddress;
-                if (elementsToUpdate.labelContact) elementsToUpdate.labelContact.textContent = t.profilePage.labelContact;
-                if (elementsToUpdate.profileContact) elementsToUpdate.profileContact.textContent = t.profilePage.profileContact;
-                if (elementsToUpdate.labelEmail) elementsToUpdate.labelEmail.textContent = t.profilePage.labelEmail;
-                if (elementsToUpdate.profileEmail) elementsToUpdate.profileEmail.textContent = t.profilePage.profileEmail;
-                if (elementsToUpdate.editProfileText) elementsToUpdate.editProfileText.textContent = t.profilePage.editProfileText;
-
-
-                // Footer
-                if (elementsToUpdate.currentYear) elementsToUpdate.currentYear.textContent = new Date().getFullYear();
-                if (elementsToUpdate.footerCopyright) elementsToUpdate.footerCopyright.textContent = `© ${new Date().getFullYear()} ${t.footer.copyright}`;
-                if (elementsToUpdate.footerPrivacy) elementsToUpdate.footerPrivacy.textContent = t.footer.privacyPolicy;
-                if (elementsToUpdate.footerTerms) elementsToUpdate.footerTerms.textContent = t.footer.termsOfService;
-                if (elementsToUpdate.footerSitemap) elementsToUpdate.footerSitemap.textContent = t.footer.sitemap;
-
-                lucide.createIcons(); // Re-create Lucide icons after content update
-            }
-            document.getElementById('back-to-dashboard').addEventListener('click', () => {
-                history.back();
-            });
-
-            // Event listener for language toggle button
-            if (elementsToUpdate.languageToggle) {
-                elementsToUpdate.languageToggle.addEventListener('click', () => {
-                    currentLang = currentLang === 'en' ? 'bn' : 'en';
-                    document.documentElement.lang = currentLang; // Update html lang attribute
-                    updateContent();
-                });
-            }
-
-            // Placeholder for User ID and Name (in a real app, this would come from authentication)
-            function setUserIdAndName() {
-                const dummyUserName = "অ্যাডভোকেট জাহিদ হাসান"; // Example dummy name (Bengali)
-
-                if (elementsToUpdate.userDisplayName) {
-                    elementsToUpdate.userDisplayName.textContent = dummyUserName;
-                }
-            }
-
-            // Initial content load and set dummy user data
-            updateContent();
-            setUserIdAndName();
-        });
-    </script>
 </body>
 </html>

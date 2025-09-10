@@ -12,7 +12,15 @@ if(isset($_POST['submit'])){
 
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-    if($result){
+    $t = "New Event Added".$title;
+
+    $d = "You have been added recently new event-".$t." Date: ".$date." Time: ".$time;
+    $current = date("Y-m-d H:i:s");
+
+    $not = "INSERT INTO notification(user_id,title,des,datetime) VALUE ('$user_id','$t','$d','$current')";
+    $result_2 = mysqli_query($conn,$not) or die(mysqli_error($conn));
+
+    if($result && $result_2){
         echo '<div class="alert alert-success" role="alert">
   Add Event Successful!
 </div>';

@@ -362,55 +362,6 @@ session_start();
                 </div>
             </div>
 
-            <!-- Advocate Sub-Role Panels (Simplified) -->
-            <div class="row g-4 mb-5">
-                <div class="col-12">
-                    <h2 class="section-header text-center mb-4" id="sub-roles-main-heading">অ্যাডভোকেট উপ-ভূমিকা প্যানেল</h2>
-                    <p class="text-muted text-center mb-5" id="sub-roles-main-tagline">আপনার নির্ধারিত উপ-ভূমিকা নির্বাচন করুন।</p>
-                </div>
-
-                <!-- Public Prosecutor (PP) Panel -->
-                <div class="col-md-6 col-lg-4">
-                    <a href="advocate_pp-dashboard.php" class="sub-role-link">
-                        <div class="sub-role-panel" id="pp-panel">
-                            <h4 id="pp-title">পাবলিক প্রসিকিউটর (PP)</h4>
-                            <p class="text-muted" id="pp-description">সরকার/রাষ্ট্রের পক্ষে ফৌজদারি মামলা পরিচালনা করেন।</p>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Assistant Public Prosecutor (APP) Panel -->
-                <div class="col-md-6 col-lg-4">
-                    <a href="advocate_app-dashboard.php" class="sub-role-link">
-                        <div class="sub-role-panel" id="app-panel">
-                            <h4 id="app-title">সহকারী পাবলিক প্রসিকিউটর (APP)</h4>
-                            <p class="text-muted" id="app-description">পাবলিক প্রসিকিউটরের তত্ত্বাবধানে কাজ করেন।</p>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Defense Counsel Panel -->
-                <div class="col-md-6 col-lg-4">
-                    <a href="advocate_defense-counsel-dashboard.php" class="sub-role-link">
-                        <div class="sub-role-panel" id="defense-counsel-panel">
-                            <h4 id="defense-counsel-title">ডিফেন্স কাউন্সেল</h4>
-                            <p class="text-muted" id="defense-counsel-description">ব্যক্তিগত ক্লায়েন্টদের প্রতিনিধিত্ব করেন।</p>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Special Public Prosecutor / Tribunal Advocate Panel -->
-                <div class="col-md-6 col-lg-4"> <!-- Centered for single column -->
-                    <a href="advocate_special-pp-dashboard.php" class="sub-role-link">
-                        <div class="sub-role-panel" id="special-pp-panel">
-                            <h4 id="special-pp-title">বিশেষ পাবলিক প্রসিকিউটর / ট্রাইব্যুনাল অ্যাডভোকেট</h4>
-                            <p class="text-muted" id="special-pp-description">উচ্চ-প্রোফাইল মামলার জন্য নিযুক্ত।</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <!-- End Advocate Sub-Role Panels -->
-
         </div>
     </section>
 
