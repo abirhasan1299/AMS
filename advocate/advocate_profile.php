@@ -188,18 +188,24 @@ session_start();
     </style>
 </head>
 <body>
-<!--update modal-->
+<!--create modal-->
 <!-- Modal -->
 <div class="modal fade" id="profileModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="update_profile.php" method="POST" enctype="multipart/form-data">
+            <form action="digging/profile.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
-                    <h5 class="modal-title">Update Profile</h5>
+                    <h5 class="modal-title">Profile Form</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
+                    <!-- User Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter your name" required>
+                    </div>
+
                     <!-- Job Post -->
                     <div class="mb-3">
                         <label class="form-label">Job Post</label>
@@ -263,6 +269,97 @@ session_start();
         </div>
     </div>
 </div>
+<!--update modal-->
+<?php
+include '../configuration/config.php';
+$sql = "SELECT * FROM profile WHERE user_id = {$_SESSION['id']}";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+while ($row = mysqli_fetch_assoc($result)) {
+?>
+<div class="modal fade" id="updateModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="digging/profile.php" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Profile Form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <!-- User Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" value="<?php echo $row['name']; ?>" required>
+                    </div>
+
+                    <!-- Job Post -->
+                    <div class="mb-3">
+                        <label class="form-label">Job Post</label>
+                        <input type="text" name="job_post" class="form-control" value="<?php echo $row['post']; ?>" required>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea name="address" class="form-control" rows="2" ><?php echo $row['address']; ?></textarea>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="mb-3">
+                        <label class="form-label">Contact Number</label>
+                        <input type="text" name="contact" class="form-control" value="<?php echo $row['contact']; ?>">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" value="<?php echo $row['email']; ?>">
+                    </div>
+
+                    <!-- Meet Link -->
+                    <div class="mb-3">
+                        <label class="form-label">Meeting Link</label>
+                        <input type="url" name="meet_link" class="form-control" value="<?php echo $row['meet_link']; ?>">
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="mb-3">
+                        <img src="../uploads/profile/<?php echo $row['img_name']; ?>" alt="Profile Photo" class="profile-photo">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Profile Image</label>
+                        <input type="file" name="profile_img" class="form-control" accept="image/*">
+                    </div>
+
+                    <!-- Specialization -->
+                    <div class="mb-3">
+                        <label class="form-label">Specialization</label>
+                        <select name="specialization" class="form-select">
+                            <option value="<?php echo $row['specialization']; ?>" selected><?php echo strtoupper($row['specialization']); ?></option>
+                            <option value="criminal-law">Criminal Law</option>
+                            <option value="family-law">Family Law</option>
+                            <option value="corporate-law">Corporate Law</option>
+                            <option value="civil-law">Civil Law</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Language -->
+                    <div class="mb-3">
+                        <label class="form-label">Languages</label>
+                        <input type="text" name="language" class="form-control" value="<?php echo $row['language']; ?>">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" name="update" class="btn btn-success">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php }} ?>
 <script src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
 <script>
     function  loadGoogleTranslate(){
@@ -318,33 +415,39 @@ session_start();
         <div class="container">
             <?php
             include '../configuration/config.php';
-            $sql = "SELECT * FROM profile WHERE user_id = {$_SESSION['user_id']}";
+            $sql = "SELECT * FROM profile WHERE user_id = {$_SESSION['id']}";
             $result = mysqli_query($conn, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
 
             ?>
             <div class="profile-card">
-                <img src="https://placehold.co/150x150/ACC8E6/000000?text=Profile" alt="Profile Photo" class="profile-photo">
+                <img src="../uploads/profile/<?php echo $row['img_name']; ?>" alt="Profile Photo" class="profile-photo">
                 <h2 class="display-6 fw-bold mb-3" id="profile-name">
-
+                    <?php echo $row['name']; ?>
                 </h2>
-                <p class="lead text-muted" id="profile-designation">সিনিয়র অ্যাডভোকেট</p>
+                <p class="lead text-muted" id="profile-designation"><?php echo $row['post']; ?></p>
 
                 <div class="profile-info">
-                    <h4 id="personal-info-heading">ব্যক্তিগত তথ্য</h4>
-                    <p><strong id="label-address">ঠিকানা:</strong> <span id="profile-address">বাড়ি #১২, রোড #৩, ধানমন্ডি, ঢাকা-১২০৫</span></p>
-                    <p><strong id="label-contact">যোগাযোগ নং:</strong> <span id="profile-contact">+880 1712 345678</span></p>
-                    <p><strong id="label-email">ইমেইল:</strong> <span id="profile-email">zahid.hasan@example.com</span></p>
+                    <h4 id="personal-info-heading">Personal Info</h4>
+                    <p><strong id="label-address">Address:</strong> <span id="profile-address"><?php echo $row['address'];?></span></p>
+                    <p><strong id="label-contact">Contact</strong> <span id="profile-contact"><?php echo $row['contact'];?></span></p>
+                    <p><strong id="label-email">Email</strong> <span id="profile-email"><?php echo $row['email'];?></span></p>
+                    <p><strong id="label-email">Specialization</strong> <span id="profile-email"><?php echo strtoupper($row['specialization']) ;?></span></p>
+                    <p><strong id="label-email">Meet Link</strong> <span id="profile-email"><?php echo $row['meet_link'];?></span></p>
+                    <p><strong id="label-email">Language</strong> <span id="profile-email"><?php echo $row['language'];?></span></p>
                 </div>
 
                 <button class="btn btn-edit-profile" id="edit-profile-button">
-                    <i data-lucide="edit" class="me-2"></i> <span id="edit-profile-text" data-bs-toggle="modal" data-bs-target="#profileModal">Edit Profile</span>
+                    <i data-lucide="edit" class="me-2"></i> <span id="edit-profile-text" data-bs-toggle="modal" data-bs-target="#updateModal">Edit Profile</span>
                 </button>
             </div>
             <?php }
             }else{
-
+                echo '<strong style="color: green;">Create Your Profile First</strong><br>';
+                echo '<button class="btn btn-edit-profile" id="edit-profile-button">
+                    <i data-lucide="edit" class="me-2"></i> <span id="edit-profile-text" data-bs-toggle="modal" data-bs-target="#profileModal">Create Profile</span>
+                </button>';
             }
             ?>
         </div>
