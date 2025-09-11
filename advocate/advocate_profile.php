@@ -242,6 +242,12 @@ session_start();
                         <input type="file" name="profile_img" class="form-control" accept="image/*">
                     </div>
 
+                    <!-- consultation fees -->
+                    <div class="mb-3">
+                        <label class="form-label">Fees</label>
+                        <input type="text" name="fees" class="form-control" placeholder="Consultation Fees">
+                    </div>
+
                     <!-- Specialization -->
                     <div class="mb-3">
                         <label class="form-label">Specialization</label>
@@ -327,11 +333,16 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <div class="mb-3">
                         <img src="../uploads/profile/<?php echo $row['img_name']; ?>" alt="Profile Photo" class="profile-photo">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Profile Image</label>
                         <input type="file" name="profile_img" class="form-control" accept="image/*">
                     </div>
-
+                    <!-- consultation fees -->
+                    <div class="mb-3">
+                        <label class="form-label">Fees</label>
+                        <input type="text" name="fees" class="form-control" value="<?php echo $row['fees']; ?>">
+                    </div>
                     <!-- Specialization -->
                     <div class="mb-3">
                         <label class="form-label">Specialization</label>
@@ -412,7 +423,7 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     <!-- Profile Content Section -->
     <section class="profile-container">
-        <div class="container">
+        <div class="container" style="margin-top: 50px;">
             <?php
             include '../configuration/config.php';
             $sql = "SELECT * FROM profile WHERE user_id = {$_SESSION['id']}";
