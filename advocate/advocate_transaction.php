@@ -6,10 +6,10 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notifications & Alerts - Advocate & Criminology Management System - আইনপ্রহরী</title>
+    <title>Transaction</title>
 
     <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -97,12 +97,12 @@ session_start();
             border-color: var(--accent-blue);
         }
 
-        .main-content-container {
+        .page-container {
             padding: 3rem 0;
-            background-color: var(--bg-blue-50-custom);
+            background-color: var(--bg-light);
         }
 
-        .info-card {
+        .content-card {
             background-color: var(--bg-white);
             padding: 2rem;
             border-radius: 0.75rem;
@@ -110,14 +110,47 @@ session_start();
             border: 1px solid #f0f0f0;
             margin-bottom: 2rem;
         }
+
         .section-header {
             color: var(--primary-blue);
             font-weight: 700;
             margin-bottom: 1.5rem;
         }
+
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+
+        .table {
+            min-width: 900px; /* Ensure table doesn't shrink too much on smaller screens */
+        }
+
+        .table thead th {
+            background-color: var(--lighter-blue);
+            color: var(--primary-blue);
+            font-weight: 600;
+            border-bottom: 2px solid var(--accent-blue);
+            padding: 1rem 0.75rem;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        .table tbody tr:hover {
+            background-color: var(--light-blue);
+        }
+
+        .table tbody td {
+            vertical-align: middle;
+            padding: 0.75rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
         .text-primary-custom {
             color: var(--accent-blue) !important;
         }
+
         .bg-gray-900-custom {
             background-color: var(--bg-dark);
         }
@@ -130,107 +163,86 @@ session_start();
             color: white !important;
         }
 
-        .notification-item {
+        /* Search and Filter styling */
+        .filter-section {
             background-color: var(--bg-white);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+            margin-bottom: 2rem;
+        }
+        .filter-section .form-control,
+        .filter-section .form-select {
             border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-            padding: 1rem 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
+            border-color: #cbd5e0; /* gray-300 */
         }
-        .notification-item.unread {
-            background-color: var(--lighter-blue);
-            border-left: 5px solid var(--accent-blue);
-        }
-        .notification-item .icon {
-            color: var(--accent-blue);
-            margin-right: 1rem;
-        }
-        .notification-item .content {
-            flex-grow: 1;
-        }
-        .notification-item .content h6 {
-            font-weight: 600;
-            color: var(--primary-blue);
-            margin-bottom: 0.25rem;
-        }
-        .notification-item .content p {
-            font-size: 0.9rem;
-            color: var(--text-medium);
-            margin-bottom: 0;
-        }
-        .notification-item .timestamp {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-left: 1rem;
-            white-space: nowrap;
-        }
-        .notification-actions {
-            margin-top: 0.5rem;
-            width: 100%;
-            text-align: right;
-        }
-        @media (min-width: 768px) {
-            .notification-item .actions {
-                margin-top: 0;
-                width: auto;
-            }
+        .filter-section .btn {
+            border-radius: 0.5rem;
         }
     </style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<?php include 'operation/navbar.php';?>
-<!-- Main Content Section -->
-<section class="main-content-container">
+<!-- Navigation Bar (Copied from advocate-dashboard.php for consistency) -->
+<?php include 'digging/navbar.php'; ?>
+
+<!-- Current Cases Content Section -->
+<section class="page-container">
     <div class="container">
-        <div class="info-card text-center">
-            <h1 class="display-5 fw-bold mb-3" id="page-heading">বিজ্ঞপ্তি ও সতর্কতা</h1>
-            <p class="lead text-muted mb-4" id="page-description">আপনার মামলা, অ্যাপয়েন্টমেন্ট এবং সিস্টেম আপডেট সম্পর্কিত গুরুত্বপূর্ণ বিজ্ঞপ্তিগুলি দেখুন।</p>
+        <div class="content-card text-center">
+            <h1 class="display-5 fw-bold mb-3" id="page-heading">Transaction</h1>
+            <p class="lead text-muted" id="page-tagline">Your all active transaction you can track here.</p>
         </div>
 
-        <div class="row g-4 mb-5">
-            <div class="col-lg-12">
-                <div class="info-card">
-                    <h3 class="section-header" id="notification-center-heading">বিজ্ঞপ্তি কেন্দ্র</h3>
-                    <div id="notification-list">
-                        <?php
-                        include '../configuration/config.php';
-                        $sql = "SELECT * FROM notification WHERE user_id={$_SESSION['id']} ORDER BY id DESC";
-                        $result = mysqli_query($conn, $sql);
-                        while ($row = mysqli_fetch_assoc($result)) {
+
+        <!-- Current Cases Table -->
+        <div class="content-card">
+            <h3 class="section-header" id="cases-table-heading">Transaction List</h3>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                    <tr>
+                        <th scope="col" id="col-case-id">SL</th>
+                        <th scope="col" id="col-case-name">Transaction ID</th>
+                        <th scope="col" id="col-client-name">Client ID</th>
+                        <th scope="col" id="col-case-status">Client Name</th>
+                        <th scope="col" id="col-next-date">Amount</th>
+                        <th scope="col" id="col-billed-amount">Date</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cases-table-body">
+                    <?php
+                    include '../configuration/config.php';
+                    $sql = "SELECT * FROM transaction LEFT JOIN users ON transaction.client_id=users.id WHERE transaction.advocate_id={$_SESSION['id']} ORDER BY transaction.id DESC";
+                    $res = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                    if (mysqli_num_rows($res) > 0) {
+                        $count =1;
+                        while ($row = mysqli_fetch_assoc($res)) {
                             ?>
-                            <div class="notification-item unread" id="notification-1">
-                                <i data-lucide="bell" class="icon"></i>
-                                <div class="content">
-                                    <h6 id="notification-title-1">
-                                        <?php echo $row['title']; ?>
-                                    </h6>
-                                    <p id="notification-text-1">
-                                        <?php echo $row['des']; ?>
-                                    </p>
-                                </div>
-                                <span class="timestamp" id="notification-time-1">
-                                    <?php echo $row['datetime']; ?>
-                                </span>
-
-                            </div>
-
-                        <?php } ?>
-
-                    </div>
-                </div>
+                            <tr>
+                                <td><?php echo $count;?></td>
+                                <td><?php echo $row['transaction_code'];?></td>
+                                <td><?php echo $row['unique_code'];?></td>
+                                <td><?php echo $row['name'];?></td>
+                                <td>$<?php echo $row['paid_fees'];?></td>
+                                <td><?php echo $row['date'];?></td>
+                            </tr>
+                            <?php
+                            $count +=1;
+                        }
+                    }else{
+                        echo '<tr style="text-align: center;font-weight: bolder;color:red;">No data found yet ! </tr>';
+                    }
+                    ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Footer -->
+<!-- Footer (Copied from advocate-dashboard.php for consistency) -->
 <footer class="bg-gray-900-custom text-light py-4">
     <div class="container text-center text-md-start d-md-flex justify-content-between align-items-center">
         <div class="mb-3 mb-md-0">
@@ -245,7 +257,7 @@ session_start();
 </footer>
 
 <!-- Bootstrap JS CDN (Bundle with Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -10,6 +10,11 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
+                    <a class="btn btn-outline-secondary d-flex align-items-center" id="back-to-dashboard" role="button" href="citizen_dashboard.php">
+                        <i data-lucide="arrow-left" class="me-2"></i> <span id="back-button-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="feature.html" id="nav-features" data-i18n-key="navFeatures">Features</a>
                 </li>
                 <li class="nav-item">

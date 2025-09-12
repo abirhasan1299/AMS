@@ -282,9 +282,9 @@ session_start();
                 </div>
                 <!-- Updated: Current Cases Card -->
                 <div class="col-md-6 col-lg-3">
-                    <a href="advocate_current-cases.php" class="action-card">
+                    <a href="advocate_transaction.php" class="action-card">
                         <i data-lucide="folder-open" class="icon-size"></i> <!-- Changed icon -->
-                        <h5 id="action-current-cases">চলমান কেসসমূহ</h5> <!-- Changed text -->
+                        <h5 id="action-current-cases">চলমান ট্রান্সেকশন</h5> <!-- Changed text -->
                     </a>
                 </div>
             </div>

@@ -215,12 +215,13 @@
             </div>
 <?php
 if(isset($_POST['search'])) {
+
     include '../configuration/config.php';
     $code = $_POST['code'];
-    $sql = "SELECT * FROM cases WHERE code = '$code'";
+    $sql = "SELECT * FROM cases LEFT JOIN users ON cases.user_id=users.id WHERE code = '$code'";
+
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
     while ($row = mysqli_fetch_assoc($result)) {
-
 ?>
             <div class="row">
                 <div class="col-12">
@@ -240,7 +241,10 @@ if(isset($_POST['search'])) {
                                 <!-- Left: Client + Description -->
                                 <div class="col-md-8">
                                     <p><strong>Client Name:</strong> <?php echo $row['client_name']; ?></p>
-                                    <p><strong>Assigned Advocate:</strong> Advocate Abir Hasan</p>
+                                    <p><strong>Assigned Advocate:</strong><?php echo $row['name']; ?> </p>
+                                    <p><strong>Email:</strong>
+                                        <?php echo $row['email']; ?>
+                                    </p>
                                     <p><strong>Description:</strong>
                                         <?php echo $row['detail']; ?>
                                     </p>
@@ -250,26 +254,39 @@ if(isset($_POST['search'])) {
                                 <div class="col-md-4">
                                     <h6 class="mb-2">Attached Files:</h6>
                                     <ul class="list-group list-group-flush">
+                                        <?php
+                                        $sql = "SELECT * FROM case_file WHERE case_id={$row['id']}";
+                                        $res = mysqli_query($conn,$sql) or die(mysqli_error($conn));
+                                        while($data=mysqli_fetch_assoc($res)){
+                                        ?>
                                         <li class="list-group-item py-2">
-                                            <a href="uploads/file1.pdf" target="_blank" class="text-decoration-none">
-                                                <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> Petition.pdf
+                                            <a href="../uploads/<?php echo $data['file_name'];?>" target="_blank" class="text-decoration-none" download>
+                                                <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> <?php echo $data['file_name'];?>
                                             </a>
                                         </li>
-                                        <li class="list-group-item py-2">
-                                            <a href="uploads/file2.docx" target="_blank" class="text-decoration-none">
-                                                <i class="bi bi-file-earmark-word-fill text-primary me-2"></i> Evidence.docx
-                                            </a>
-                                        </li>
-                                        <li class="list-group-item py-2">
-                                            <a href="uploads/file3.jpg" target="_blank" class="text-decoration-none">
-                                                <i class="bi bi-file-earmark-image-fill text-success me-2"></i> Image.jpg
-                                            </a>
-                                        </li>
+<?php } ?>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div style="margin: auto;width: 60%;">
+                                    <h3 class="mb-2">Sub Document Files</h3>
+                                    <ul>
+<?php
+$q = "SELECT * FROM case_sub_document WHERE case_id={$row['id']}";
+$r = mysqli_query($conn,$q) or die(mysqli_error($conn));
+while($data = mysqli_fetch_assoc($r)){
+?>
+                                        <li>Type: <?php echo strtoupper($data['type']); ?> </li>
+                                         <li>Description: <?php echo $data['des']; ?></li>
+                                         <li>File: <a href="../uploads/<?php echo  $data['file_name']; ?>" style="text-decoration: none;" download><?php echo  $data['file_name']; ?></a></li>
+                                        <hr>
+<?php } ?>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
