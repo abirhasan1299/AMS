@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <?php
-session_start();
+include '../configuration/security.php';
 ?>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">

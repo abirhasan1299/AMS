@@ -172,7 +172,7 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="features.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
+                        <a class="nav-link" href="feature.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="roles.html" id="nav-roles">ভূমিকা</a>

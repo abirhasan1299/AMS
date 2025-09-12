@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="btn btn-outline-secondary d-flex align-items-center" id="back-to-dashboard" role="button" href="advocate-dashboard.php">
+                    <a class="btn btn-outline-secondary d-flex align-items-center" id="back-to-dashboard" role="button" href="admin_dashboard.php">
                         <i data-lucide="arrow-left" class="me-2"></i> <span id="back-button-text">Dashboard</span>
                     </a>
                 </li>
@@ -22,11 +22,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../contact.html" id="nav-contact" data-i18n-key="navContact">Contact</a>
-                </li>
-                <li class="nav-item ms-lg-3">
-                    <a class="btn btn-outline-primary d-flex align-items-center" href="advocate_profile.php" id="nav-profile">
-                        <i data-lucide="user" class="me-2"></i> <span id="user-display-name">Profile</span>
-                    </a>
                 </li>
                 <li class="nav-item ms-lg-3">
                     <a class="btn btn-primary-custom d-flex align-items-center" href="operation/logout.php" id="nav-logout" data-i18n-key="navLogout">

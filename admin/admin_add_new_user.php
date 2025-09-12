@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php include '../configuration/security.php'; ?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -149,76 +150,44 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <i data-lucide="gavel" class="me-2 text-primary-custom-icon"></i>
-                <span id="app-name">আইনপ্রহরী</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <button class="btn btn-outline-secondary d-flex align-items-center" id="back-to-dashboard">
-                            <i data-lucide="arrow-left" class="me-2"></i> <span id="back-button-text">ড্যাশবোর্ডে ফিরে যান</span>
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="feature.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="roles.html" id="nav-roles">ভূমিকা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
-                            <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.html" id="nav-logout">
-                            <i data-lucide="log-out" class="me-2"></i> লগআউট
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include 'digging/navbar.php';?>
     <!-- End Navigation Bar -->
 
     <!-- Main Content -->
     <main class="dashboard-container">
         <div class="container">
             <div class="content-card">
+                <?php include 'digging/add-user.php'; ?>
                 <h2 class="section-header" id="header-add-new-user">Add New User</h2>
                 <p class="sub-header" id="sub-header-desc">Fill out the form below to create a new user account.</p>
 
-                <form>
+                <form action="<?php $_SERVER['PHP_SELF'] ;?>" method="POST" autocomplete="off">
                     <div class="mb-3">
                         <label for="username" class="form-label" id="label-username">Username</label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        <input type="text" name="username" class="form-control" id="username" placeholder="Enter username">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label" id="label-password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Enter password">
                     </div>
                     <div class="mb-3">
                         <label for="role" class="form-label" id="label-role">Role</label>
-                        <select class="form-select" id="role-select">
-                            <option id="role-admin">Admin</option>
-                            <option id="role-advocate">Advocate</option>
-                            <option id="role-client">Client</option>
+                        <select class="form-select" name="role" id="role-select">
+                            <option value="admin">Admin</option>
+                            <option value="advocate">Advocate</option>
+                            <option value="citizen">Citizen</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label" >Email</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter Email Address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label" >Phone</label>
+                        <input type="number" name="phone" class="form-control" id="phone" placeholder="Enter Phone Number">
+                    </div>
                     <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary-custom btn-action" id="text-create-user">Create User</button>
+                        <button type="submit" name="submit" class="btn btn-primary-custom btn-action" id="text-create-user">Create User</button>
                     </div>
                 </form>
             </div>
@@ -240,124 +209,8 @@
         </div>
     </footer>
 
-
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Language content translations
-        const translations = {
-            en: {
-                'back-button-text': 'Back to Dashboard',
-                'app-name': 'Ainprohori',
-                'nav-features': 'Features',
-                'nav-roles': 'Roles',
-                'nav-contact': 'Contact',
-                'nav-profile': 'Admin Profile',
-                'nav-logout': 'Logout',
-                'language-toggle': 'বাংলা',
-                'header-add-new-user': 'Add New User',
-                'sub-header-desc': 'Fill out the form below to create a new user account.',
-                'label-username': 'Username',
-                'label-password': 'Password',
-                'label-role': 'Role',
-                'role-select': 'Select a role',
-                'role-admin': 'Admin',
-                'role-advocate': 'Advocate',
-                'role-client': 'Client',
-                'text-create-user': 'Create User',
-                footer: {
-                    copyright: 'All Rights Reserved.',
-                    privacyPolicy: 'Privacy Policy',
-                    termsOfService: 'Terms of Service',
-                    sitemap: 'Sitemap'
-                }
-            },
-            bn: {
-                'back-button-text': 'ড্যাশবোর্ডে ফিরে যান',
-                'app-name': 'আইনপ্রহরী',
-                'nav-features': 'বৈশিষ্ট্যসমূহ',
-                'nav-roles': 'ভূমিকা',
-                'nav-contact': 'যোগাযোগ',
-                'nav-profile': 'অ্যাডমিন প্রোফাইল',
-                'nav-logout': 'লগআউট',
-                'language-toggle': 'English',
-                'header-add-new-user': 'নতুন ব্যবহারকারী যোগ করুন',
-                'sub-header-desc': 'নতুন ব্যবহারকারী অ্যাকাউন্ট তৈরি করতে নিচের ফর্মটি পূরণ করুন।',
-                'label-username': 'ব্যবহারকারীর নাম',
-                'label-password': 'পাসওয়ার্ড',
-                'label-role': 'ভূমিকা',
-                'role-select': 'ভূমিকা নির্বাচন করুন',
-                'role-admin': 'অ্যাডমিন',
-                'role-advocate': 'অ্যাডভোকেট',
-                'role-client': 'ক্লায়েন্ট',
-                'text-create-user': 'ব্যবহারকারী তৈরি করুন',
-                footer: {
-                    copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                    privacyPolicy: "গোপনীয়তা নীতি",
-                    termsOfService: "পরিষেবার শর্তাবলী",
-                    sitemap: "সাইটম্যাপ"
-                }
-            }
-        };
-
-        let currentLang = 'en';
-
-        function updateContent() {
-            const t = translations[currentLang];
-            document.getElementById('back-button-text').textContent = t['back-button-text'];
-            document.getElementById('app-name').textContent = t['app-name'];
-            document.getElementById('nav-features').textContent = t['nav-features'];
-            document.getElementById('nav-roles').textContent = t['nav-roles'];
-            document.getElementById('nav-contact').textContent = t['nav-contact'];
-            document.getElementById('user-display-name').textContent = t['nav-profile'];
-            document.getElementById('nav-logout').innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t['nav-logout']}`;
-            document.getElementById('language-toggle').textContent = t['language-toggle'];
-
-            // Update main content
-            document.getElementById('header-add-new-user').textContent = t['header-add-new-user'];
-            document.getElementById('sub-header-desc').textContent = t['sub-header-desc'];
-            document.getElementById('label-username').textContent = t['label-username'];
-            document.getElementById('label-password').textContent = t['label-password'];
-            document.getElementById('label-role').textContent = t['label-role'];
-            document.getElementById('role-select').options[0].textContent = t['role-admin'];
-            document.getElementById('role-select').options[1].textContent = t['role-advocate'];
-            document.getElementById('role-select').options[2].textContent = t['role-client'];
-            document.getElementById('text-create-user').textContent = t['text-create-user'];
-
-
-            // Update Footer
-            const currentYear = new Date().getFullYear();
-            document.getElementById('footer-copyright').textContent = `© ${currentYear} ${t.footer.copyright}`;
-            document.getElementById('footer-privacy').textContent = t.footer.privacyPolicy;
-            document.getElementById('footer-terms').textContent = t.footer.termsOfService;
-            document.getElementById('footer-sitemap').textContent = t.footer.sitemap;
-
-            // Re-render Lucide icons after content update
-            lucide.createIcons();
-           
-        }
-         
-        const languageToggle = document.getElementById('language-toggle');
-        if (languageToggle) {
-            languageToggle.addEventListener('click', () => {
-                currentLang = currentLang === 'en' ? 'bn' : 'en';
-                document.documentElement.lang = currentLang;
-                updateContent();
-            });
-        }
-
-        // Event listener for the back button
-        const backToDashboardButton = document.getElementById('back-to-dashboard');
-        if (backToDashboardButton) {
-            backToDashboardButton.addEventListener('click', () => {
-                window.location.href = 'admin_dashboard.html';
-            });
-        }
-        
-        updateContent();
-    });
-</script>
 </body>
 </html>

@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+include '../configuration/security.php';
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -232,43 +235,7 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <i data-lucide="gavel" class="me-2 text-primary-custom-icon"></i>
-                <span id="app-name">আইনপ্রহরী</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="feature.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="roles.html" id="nav-roles">ভূমিকা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
-                            <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.html" id="nav-logout">
-                            <i data-lucide="log-out" class="me-2"></i> লগআউট
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+   <?php include 'digging/navbar.php'; ?>
     <!-- Main Content -->
     <main class="dashboard-container">
         <div class="container">
@@ -282,7 +249,7 @@
                         </p>
                     </div>
                     <div class="col-md-4 text-md-end">
-                        <p class="text-medium mb-0">Admin ID: <strong class="text-dark" id="user-id-value">ADM-1234567890ABCDEF</strong></p>
+                        <p class="text-medium mb-0">Admin ID: <strong class="text-dark" id="user-id-value">ADM#<?php echo $_SESSION['unique_code']; ?></strong></p>
                     </div>
                 </div>
             </div>
@@ -293,7 +260,7 @@
                     <div class="analytics-card text-center mb-md-0">
                         <i data-lucide="users" class="icon-size text-primary-custom"></i>
                         <div class="mt-3">
-                            <div class="analytics-metric">5,432</div>
+                            <?php include 'operation/total_user.php'; ?>
                             <div class="analytics-label">Total Users</div>
                         </div>
                     </div>
@@ -302,7 +269,7 @@
                     <div class="analytics-card text-center mb-md-0">
                         <i data-lucide="briefcase" class="icon-size text-primary-custom"></i>
                         <div class="mt-3">
-                            <div class="analytics-metric">1,245</div>
+                            <?php include 'operation/total_case.php'; ?>
                             <div class="analytics-label">Total Cases</div>
                         </div>
                     </div>
@@ -311,7 +278,7 @@
                     <div class="analytics-card text-center">
                         <i data-lucide="file-text" class="icon-size text-primary-custom"></i>
                         <div class="mt-3">
-                            <div class="analytics-metric">87</div>
+                            <?php include 'operation/pending_case.php'; ?>
                             <div class="analytics-label">Pending Cases</div>
                         </div>
                     </div>
@@ -351,13 +318,6 @@
                         <p class="text-sm text-medium">Search and manage all case files.</p>
                     </a>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <a href="admin_system_settings.php" class="action-card">
-                        <i data-lucide="settings" class="icon-size"></i>
-                        <h5 class="mt-3">System Settings</h5>
-                        <p class="text-sm text-medium">Configure application settings.</p>
-                    </a>
-                </div>
             </div>
         </div>
     </main>
@@ -381,193 +341,5 @@
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Language content translations
-        const translations = {
-            en: {
-                // ADDED NEW KEY FOR BACK BUTTON
-              
-                'app-name': 'Ainprohori',
-                'nav-features': 'Features',
-                'nav-roles': 'Roles',
-                'nav-contact': 'Contact',
-                'nav-profile': 'Admin Profile',
-                'nav-logout': 'Logout',
-                'language-toggle': 'বাংলা',
-                'welcome-message': 'Welcome, <span id=\"admin-display-name\">Admin User</span>. You have a full overview of the system.',
-                'admin-display-name': 'Admin User',
-                'admin-dashboard-header': 'Admin Dashboard',
-                'total-users-label': 'Total Users',
-                'total-cases-label': 'Total Cases',
-                'pending-cases-label': 'Pending Cases',
-                'manage-actions-header': 'Management Actions',
-                'add-user-title': 'Add New User',
-                'add-user-desc': 'Create a new user account.',
-                'view-users-title': 'View All Users',
-                'view-users-desc': 'See and manage all registered users.',
-                'create-case-title': 'Create New Case',
-                'create-case-desc': 'Start a new case file.',
-                'view-cases-title': 'View All Cases',
-                'view-cases-desc': 'Search and manage all case files.',
-                'system-analytics-desc': 'Access detailed system usage reports.',
-                'system-settings-title': 'System Settings',
-                'system-settings-desc': 'Configure application settings.',
-                footer: {
-                    copyright: 'All Rights Reserved.',
-                    privacyPolicy: 'Privacy Policy',
-                    termsOfService: 'Terms of Service',
-                    sitemap: 'Sitemap'
-                }
-            },
-            bn: {
-                // ADDED NEW KEY FOR BACK BUTTON
-                
-                'app-name': 'আইনপ্রহরী',
-                'nav-features': 'বৈশিষ্ট্যসমূহ',
-                'nav-roles': 'ভূমিকা',
-                'nav-contact': 'যোগাযোগ',
-                'nav-profile': 'অ্যাডমিন প্রোফাইল',
-                'nav-logout': 'লগআউট',
-                'language-toggle': 'English',
-                'welcome-message': 'স্বাগতম, <span id=\"admin-display-name\">অ্যাডমিন ব্যবহারকারী</span>। আপনার কাছে সিস্টেমের সম্পূর্ণ ওভারভিউ আছে।',
-                'admin-display-name': 'অ্যাডমিন ব্যবহারকারী',
-                'admin-dashboard-header': 'অ্যাডমিন ড্যাশবোর্ড',
-                'total-users-label': 'মোট ব্যবহারকারী',
-                'total-cases-label': 'মোট মামলা',
-                'pending-cases-label': 'চলমান মামলা',
-                'manage-actions-header': 'ব্যবস্থাপনার কার্যক্রম',
-                'add-user-title': 'নতুন ব্যবহারকারী যোগ করুন',
-                'add-user-desc': 'একটি নতুন ব্যবহারকারী অ্যাকাউন্ট তৈরি করুন।',
-                'view-users-title': 'সমস্ত ব্যবহারকারী দেখুন',
-                'view-users-desc': 'সমস্ত নিবন্ধিত ব্যবহারকারী দেখুন এবং পরিচালনা করুন।',
-                'create-case-title': 'নতুন মামলা তৈরি করুন',
-                'create-case-desc': 'একটি নতুন মামলার ফাইল শুরু করুন।',
-                'view-cases-title': 'সমস্ত মামলা দেখুন',
-                'view-cases-desc': 'সমস্ত মামলার ফাইল অনুসন্ধান এবং পরিচালনা করুন।',
-                'system-analytics-title': 'সিস্টেম অ্যানালিটিক্স দেখুন',
-                'system-analytics-desc': 'বিস্তারিত সিস্টেম ব্যবহারের রিপোর্ট অ্যাক্সেস করুন।',
-                'system-settings-title': 'সিস্টেম সেটিংস',
-                'system-settings-desc': 'অ্যাপ্লিকেশন সেটিংস কনফিগার করুন।',
-                footer: {
-                    copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                    privacyPolicy: "গোপনীয়তা নীতি",
-                    termsOfService: "পরিষেবার শর্তাবলী",
-                    sitemap: "সাইটম্যাপ"
-                }
-            }
-        };
-
-        let currentLang = 'en';
-
-        function updateContent() {
-            const t = translations[currentLang];
-
-            // Update Navbar and Welcome text
-            document.getElementById('app-name').textContent = t['app-name'];
-            document.getElementById('nav-features').textContent = t['nav-features'];
-            document.getElementById('nav-roles').textContent = t['nav-roles'];
-            document.getElementById('nav-contact').textContent = t['nav-contact'];
-            document.getElementById('user-display-name').textContent = t['nav-profile'];
-            document.getElementById('nav-logout').innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t['nav-logout']}`;
-            document.getElementById('welcome-message').innerHTML = t['welcome-message'];
-            const headers = document.querySelectorAll('.section-header');
-            if (headers[0]) headers[0].textContent = t['admin-dashboard-header'];
-            if (headers[1]) headers[1].textContent = t['manage-actions-header'];
-            
-            // NEW: Update the back button text
-            const backButtonText = document.getElementById('back-button-text');
-            if (backButtonText) {
-                backButtonText.textContent = t['back-button-text'];
-            }
-
-            // Update Language Toggle Button Text
-            const languageToggle = document.getElementById('language-toggle');
-            if (languageToggle) {
-                languageToggle.textContent = t['language-toggle'];
-            }
-
-            // Update Analytics Cards
-            const analyticsCards = [
-                { selector: 'users', labelId: 'total-users-label' },
-                { selector: 'briefcase', labelId: 'total-cases-label' },
-                { selector: 'file-text', labelId: 'pending-cases-label' }
-            ];
-
-            analyticsCards.forEach(card => {
-                const cardElement = document.querySelector(`.analytics-card [data-lucide="${card.selector}"]`);
-                if (cardElement) {
-                    const label = cardElement.parentElement.querySelector('.analytics-label');
-                    if (label) {
-                        label.textContent = t[card.labelId];
-                    }
-                }
-            });
-
-            // Update Management Action Cards
-            const actionCards = [
-                { selector: 'user-plus', titleId: 'add-user-title', descId: 'add-user-desc' },
-                { selector: 'list', titleId: 'view-users-title', descId: 'view-users-desc' },
-                { selector: 'folder-plus', titleId: 'create-case-title', descId: 'create-case-desc' },
-                { selector: 'folder-search', titleId: 'view-cases-title', descId: 'view-cases-desc' },
-                { selector: 'bar-chart-2', titleId: 'system-analytics-title', descId: 'system-analytics-desc' },
-                { selector: 'settings', titleId: 'system-settings-title', descId: 'system-settings-desc' }
-            ];
-
-            actionCards.forEach(card => {
-                const cardElement = document.querySelector(`.action-card [data-lucide="${card.selector}"]`);
-                if (cardElement) {
-                    const parent = cardElement.parentElement;
-                    const title = parent.querySelector('h5');
-                    const desc = parent.querySelector('p');
-                    if (title) title.textContent = t[card.titleId];
-                    if (desc) desc.textContent = t[card.descId];
-                }
-            });
-
-            // Update Footer
-            const currentYear = new Date().getFullYear();
-            document.getElementById('footer-copyright').textContent = `© ${currentYear} ${t.footer.copyright}`;
-            document.getElementById('footer-privacy').textContent = t.footer.privacyPolicy;
-            document.getElementById('footer-terms').textContent = t.footer.termsOfService;
-            document.getElementById('footer-sitemap').textContent = t.footer.sitemap;
-
-            // Re-render Lucide icons after content update
-            lucide.createIcons();
-           
-        }
-
-        // Event listener for language toggle button
-        const languageToggle = document.getElementById('language-toggle');
-        if (languageToggle) {
-            languageToggle.addEventListener('click', () => {
-                currentLang = currentLang === 'en' ? 'bn' : 'en';
-                document.documentElement.lang = currentLang;
-                updateContent();
-            });
-        }
-        
-        // NEW: Event listener for the back button
-        const backToDashboardButton = document.getElementById('back-to-dashboard');
-        if (backToDashboardButton) {
-            backToDashboardButton.addEventListener('click', () => {
-                // Redirects the user to the admin dashboard page.
-                // Assuming admin_dashboard.php is the correct URL for the dashboard.
-                window.location.href = 'admin_dashboard.html';
-            });
-        }
-
-        // Initial content load and set dummy user data
-        function setUserIdAndName() {
-            const dummyUserId = "ADM-1234567890ABCDEF";
-            const userIdValue = document.getElementById('user-id-value');
-            if (userIdValue) {
-                userIdValue.textContent = dummyUserId;
-            }
-        }
-        updateContent();
-        setUserIdAndName();
-    });
-</script>
 </body>
 </html>

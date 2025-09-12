@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php include '../configuration/security.php'; ?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -147,80 +148,56 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <i data-lucide="gavel" class="me-2 text-primary-custom-icon"></i>
-                <span id="app-name">আইনপ্রহরী</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <button class="btn btn-outline-secondary d-flex align-items-center" id="back-to-dashboard">
-                            <i data-lucide="arrow-left" class="me-2"></i> <span id="back-button-text">ড্যাশবোর্ডে ফিরে যান</span>
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="feature.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="roles.html" id="nav-roles">ভূমিকা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
-                            <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.html" id="nav-logout">
-                            <i data-lucide="log-out" class="me-2"></i> লগআউট
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- End Navigation Bar -->
+   <?php include "digging/navbar.php" ;?>
 
     <!-- Main Content -->
     <main class="dashboard-container">
         <div class="container">
+            <?php include "operation/add-case.php";?>
             <div class="content-card">
                 <h2 class="section-header" id="header-create-case">Create New Case</h2>
                 <p class="sub-header" id="sub-header-desc">Fill out the form below to start a new case file.</p>
 
-                <form>
+                <form method="POST" action="<?php $_SERVER['PHP_SELF']; ?>" autocomplete="off">
                     <div class="mb-3">
                         <label for="case-title" class="form-label" id="label-title">Case Title</label>
-                        <input type="text" class="form-control" id="case-title" placeholder="Enter case title">
+                        <input type="text" class="form-control" name="title" id="case-title" placeholder="Enter case title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="case-title" class="form-label" id="label-title">Client Name</label>
+                        <input type="text" class="form-control" name="client_name" id="case-title" placeholder="Enter Client Name">
                     </div>
                     <div class="mb-3">
                         <label for="case-description" class="form-label" id="label-description">Case Description</label>
-                        <textarea class="form-control" id="case-description" rows="3" placeholder="Enter a brief description of the case"></textarea>
+                        <textarea class="form-control" name="detail" id="case-description" rows="3" placeholder="Enter a brief description of the case"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="assigned-advocate" class="form-label" id="label-advocate">Assigned Advocate</label>
-                        <input type="text" class="form-control" id="assigned-advocate" placeholder="Enter advocate's name or ID">
+                        <select class="form-select" name="user_id">
+                            <option selected disabled>CHOOSE ADVOCATE</option>
+        <?php
+        include '../configuration/config.php';
+        $sql = "SELECT * FROM users WHERE role = 'advocate' ORDER BY id DESC";
+        $result = mysqli_query($conn, $sql);
+        while ($row = mysqli_fetch_assoc($result)) {
+        ?>
+                            <option value="<?php echo $row['id'] ;?>">
+                                <?php echo "ADV#".$row['unique_code']." - ".$row['name']; ?>
+                            </option>
+        <?php } ?>
+                        </select>
                     </div>
                      <div class="mb-3">
                         <label for="case-status" class="form-label" id="label-status">Status</label>
-                        <select class="form-select" id="status-select">
-                            <option id="status-pending">Pending</option>
-                            <option id="status-active">Active</option>
-                            <option id="status-closed">Closed</option>
+                        <select class="form-select" name="status" id="status-select">
+                            <option value="pending">Pending</option>
+                            <option value="Active">Active</option>
+                            <option value="Assigned">Assigned</option>
+                            <option value="Closed">Closed</option>
                         </select>
                     </div>
                     <div class="d-grid gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary-custom btn-action" id="text-create-case">Create Case</button>
+                        <button type="submit" name="submit" class="btn btn-primary-custom btn-action" id="text-create-case">Create Case</button>
                     </div>
                 </form>
             </div>
@@ -242,125 +219,8 @@
         </div>
     </footer>
 
-
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Language content translations
-        const translations = {
-            en: {
-                'back-button-text': 'Back to Dashboard',
-                'app-name': 'Ainprohori',
-                'nav-features': 'Features',
-                'nav-roles': 'Roles',
-                'nav-contact': 'Contact',
-                'nav-profile': 'Admin Profile',
-                'nav-logout': 'Logout',
-                'language-toggle': 'বাংলা',
-                'header-create-case': 'Create New Case',
-                'sub-header-desc': 'Fill out the form below to start a new case file.',
-                'label-title': 'Case Title',
-                'label-description': 'Case Description',
-                'label-advocate': 'Assigned Advocate',
-                'label-status': 'Status',
-                'status-select': 'Select a status',
-                'status-pending': 'Pending',
-                'status-active': 'Active',
-                'status-closed': 'Closed',
-                'text-create-case': 'Create Case',
-                footer: {
-                    copyright: 'All Rights Reserved.',
-                    privacyPolicy: 'Privacy Policy',
-                    termsOfService: 'Terms of Service',
-                    sitemap: 'Sitemap'
-                }
-            },
-            bn: {
-                'back-button-text': 'ড্যাশবোর্ডে ফিরে যান',
-                'app-name': 'আইনপ্রহরী',
-                'nav-features': 'বৈশিষ্ট্যসমূহ',
-                'nav-roles': 'ভূমিকা',
-                'nav-contact': 'যোগাযোগ',
-                'nav-profile': 'অ্যাডমিন প্রোফাইল',
-                'nav-logout': 'লগআউট',
-                'language-toggle': 'English',
-                'header-create-case': 'নতুন মামলা তৈরি করুন',
-                'sub-header-desc': 'নতুন মামলার ফাইল শুরু করতে নিচের ফর্মটি পূরণ করুন।',
-                'label-title': 'মামলার শিরোনাম',
-                'label-description': 'মামলার বিবরণ',
-                'label-advocate': 'নিযুক্ত অ্যাডভোকেট',
-                'label-status': 'অবস্থা',
-                'status-select': 'অবস্থা নির্বাচন করুন',
-                'status-pending': 'চলমান',
-                'status-active': 'সক্রিয়',
-                'status-closed': 'বন্ধ',
-                'text-create-case': 'মামলা তৈরি করুন',
-                footer: {
-                    copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                    privacyPolicy: "গোপনীয়তা নীতি",
-                    termsOfService: "পরিষেবার শর্তাবলী",
-                    sitemap: "সাইটম্যাপ"
-                }
-            }
-        };
-
-        let currentLang = 'en';
-
-        function updateContent() {
-            const t = translations[currentLang];
-            document.getElementById('back-button-text').textContent = t['back-button-text'];
-            document.getElementById('app-name').textContent = t['app-name'];
-            document.getElementById('nav-features').textContent = t['nav-features'];
-            document.getElementById('nav-roles').textContent = t['nav-roles'];
-            document.getElementById('nav-contact').textContent = t['nav-contact'];
-            document.getElementById('user-display-name').textContent = t['nav-profile'];
-            document.getElementById('nav-logout').innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t['nav-logout']}`;
-            document.getElementById('language-toggle').textContent = t['language-toggle'];
-
-            // Update main content
-            document.getElementById('header-create-case').textContent = t['header-create-case'];
-            document.getElementById('sub-header-desc').textContent = t['sub-header-desc'];
-            document.getElementById('label-title').textContent = t['label-title'];
-            document.getElementById('label-description').textContent = t['label-description'];
-            document.getElementById('label-advocate').textContent = t['label-advocate'];
-            document.getElementById('label-status').textContent = t['label-status'];
-            document.getElementById('status-select').options[0].textContent = t['status-pending'];
-            document.getElementById('status-select').options[1].textContent = t['status-active'];
-            document.getElementById('status-select').options[2].textContent = t['status-closed'];
-            document.getElementById('text-create-case').textContent = t['text-create-case'];
-
-            // Update Footer
-            const currentYear = new Date().getFullYear();
-            document.getElementById('footer-copyright').textContent = `© ${currentYear} ${t.footer.copyright}`;
-            document.getElementById('footer-privacy').textContent = t.footer.privacyPolicy;
-            document.getElementById('footer-terms').textContent = t.footer.termsOfService;
-            document.getElementById('footer-sitemap').textContent = t.footer.sitemap;
-
-            // Re-render Lucide icons after content update
-            lucide.createIcons();
-        }
-
-        const languageToggle = document.getElementById('language-toggle');
-        if (languageToggle) {
-            languageToggle.addEventListener('click', () => {
-                currentLang = currentLang === 'en' ? 'bn' : 'en';
-                document.documentElement.lang = currentLang;
-                updateContent();
-            });
-        }
-        
-        // Event listener for the back button
-        const backToDashboardButton = document.getElementById('back-to-dashboard');
-        if (backToDashboardButton) {
-            backToDashboardButton.addEventListener('click', () => {
-                window.location.href = 'admin_dashboard.html';
-            });
-        }
-        
-        updateContent();
-    });
-</script>
 </body>
 </html>

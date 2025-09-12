@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 ob_start();
-session_start();
+include '../configuration/config.php';
 ?>
 <html lang="en">
 <head>

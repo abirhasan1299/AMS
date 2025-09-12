@@ -249,7 +249,7 @@
                     $sql = "INSERT INTO users(unique_code,name,email,phone,password,role) VALUES ('$unique_code','$name','$email','$phone','$password','$role')";
                     $query = mysqli_query($conn, $sql) or die(mysqli_error($conn));
                     if($query){
-                        echo '<div class="alert alert-success" role="alert">Signup Successfully Done, Go <a href="login.php">Login</a>a> Area ...</div>';
+                        echo '<div class="alert alert-success" role="alert">Signup Successfully Done, Go <a href="login.php">Login</a> Area ...</div>';
                     }else{
                         echo '<div class="alert alert-danger" role="alert">Something Went Wrong</div>';
                     }

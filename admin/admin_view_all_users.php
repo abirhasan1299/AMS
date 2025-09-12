@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php include '../configuration/security.php'; ?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -185,48 +186,7 @@
 </head>
 <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <i data-lucide="gavel" class="me-2 text-primary-custom-icon"></i>
-                <span id="app-name">আইনপ্রহরী</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <button class="btn btn-outline-secondary d-flex align-items-center" id="back-to-dashboard">
-                            <i data-lucide="arrow-left" class="me-2"></i> <span id="back-button-text">ড্যাশবোর্ডে ফিরে যান</span>
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="feature.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="roles.html" id="nav-roles">ভূমিকা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-outline-primary d-flex align-items-center" href="admin_profile.php" id="nav-profile">
-                            <i data-lucide="user" class="me-2"></i> <span id="user-display-name">ব্যবহারকারী</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.html" id="nav-logout">
-                            <i data-lucide="log-out" class="me-2"></i> লগআউট
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include 'digging/navbar.php';?>
     <!-- End Navigation Bar -->
 
     <!-- Main Content -->
@@ -249,53 +209,28 @@
                                 <th id="col-name">Name</th>
                                 <th id="col-email">Email</th>
                                 <th id="col-role">Role</th>
-                                <th id="col-status">Status</th>
+                                <th id="col-status">Password</th>
                                 <th id="col-actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
+<?php
+include '../configuration/config.php';
+$sql = "SELECT * FROM `users` ORDER BY id DESC";
+$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+while ($row = mysqli_fetch_assoc($result)) {
+?>
                             <tr>
-                                <td>USER-1001</td>
-                                <td>John Doe</td>
-                                <td>john.doe@example.com</td>
-                                <td>Admin</td>
-                                <td><span class="badge badge-active rounded-pill p-2" id="status-active">Active</span></td>
+                                <td><?php echo "CTZ#".$row['unique_code']; ?></td>
+                                <td><?php echo $row['name']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo ucfirst($row['role']); ?></td>
+                                <td><?php echo $row['password']; ?></td>
                                 <td>
-                                    <div class="d-flex gap-2">
-                                        <i data-lucide="eye" class="action-icon text-muted" title="View Details"></i>
-                                        <i data-lucide="edit-3" class="action-icon text-muted" title="Edit"></i>
-                                        <i data-lucide="trash-2" class="action-icon text-danger" title="Delete"></i>
-                                    </div>
+                                    <a role="button" class="btn btn-sm btn-danger" href="operation/user-trash.php?id=<?php echo $row['id']; ?>">Trash</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>USER-1002</td>
-                                <td>Jane Smith</td>
-                                <td>jane.smith@example.com</td>
-                                <td>Advocate</td>
-                                <td><span class="badge badge-active rounded-pill p-2" id="status-active-2">Active</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <i data-lucide="eye" class="action-icon text-muted" title="View Details"></i>
-                                        <i data-lucide="edit-3" class="action-icon text-muted" title="Edit"></i>
-                                        <i data-lucide="trash-2" class="action-icon text-danger" title="Delete"></i>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>USER-1003</td>
-                                <td>Peter Jones</td>
-                                <td>peter.jones@example.com</td>
-                                <td>Client</td>
-                                <td><span class="badge badge-inactive rounded-pill p-2" id="status-inactive">Inactive</span></td>
-                                <td>
-                                    <div class="d-flex gap-2">
-                                        <i data-lucide="eye" class="action-icon text-muted" title="View Details"></i>
-                                        <i data-lucide="edit-3" class="action-icon text-muted" title="Edit"></i>
-                                        <i data-lucide="trash-2" class="action-icon text-danger" title="Delete"></i>
-                                    </div>
-                                </td>
-                            </tr>
+<?php }?>
                         </tbody>
                     </table>
                 </div>
@@ -332,144 +267,5 @@
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Function to show custom modal
-            function showModal(headerText, bodyText) {
-                document.getElementById('modal-header').textContent = headerText;
-                document.getElementById('modal-body').textContent = bodyText;
-                document.getElementById('customModal').style.display = 'flex';
-            }
-
-            // Function to close custom modal
-            document.getElementById('modal-close').addEventListener('click', () => {
-                document.getElementById('customModal').style.display = 'none';
-            });
-            
-            // Language content translations
-            const translations = {
-                en: {
-                    'back-button-text': 'Back to Dashboard',
-                    'app-name': 'Ainprohori',
-                    'nav-features': 'Features',
-                    'nav-roles': 'Roles',
-                    'nav-contact': 'Contact',
-                    'nav-profile': 'Admin Profile',
-                    'nav-logout': 'Logout',
-                    'language-toggle': 'বাংলা',
-                    'header-users': 'All Users',
-                    'sub-header-desc': 'A complete list of all registered users in the system.',
-                    'col-user-id': 'User ID',
-                    'col-name': 'Name',
-                    'col-email': 'Email',
-                    'col-role': 'Role',
-                    'col-status': 'Status',
-                    'col-actions': 'Actions',
-                    'status-active': 'Active',
-                    'status-inactive': 'Inactive',
-                    footer: {
-                        copyright: 'All Rights Reserved.',
-                        privacyPolicy: 'Privacy Policy',
-                        termsOfService: 'Terms of Service',
-                        sitemap: 'Sitemap'
-                    }
-                },
-                bn: {
-                    'back-button-text': 'ড্যাশবোর্ডে ফিরে যান',
-                    'app-name': 'আইনপ্রহরী',
-                    'nav-features': 'বৈশিষ্ট্যসমূহ',
-                    'nav-roles': 'ভূমিকা',
-                    'nav-contact': 'যোগাযোগ',
-                    'nav-profile': 'অ্যাডমিন প্রোফাইল',
-                    'nav-logout': 'লগআউট',
-                    'language-toggle': 'English',
-                    'header-users': 'সব ব্যবহারকারী',
-                    'sub-header-desc': 'সিস্টেমের সমস্ত নিবন্ধিত ব্যবহারকারীর একটি সম্পূর্ণ তালিকা।',
-                    'col-user-id': 'ব্যবহারকারী আইডি',
-                    'col-name': 'নাম',
-                    'col-email': 'ইমেল',
-                    'col-role': 'ভূমিকা',
-                    'col-status': 'অবস্থা',
-                    'col-actions': 'কার্যক্রম',
-                    'status-active': 'সক্রিয়',
-                    'status-inactive': 'নিষ্ক্রিয়',
-                    footer: {
-                        copyright: "আইনপ্রহরী. সর্বস্বত্ব সংরক্ষিত।",
-                        privacyPolicy: "গোপনীয়তা নীতি",
-                        termsOfService: "পরিষেবার শর্তাবলী",
-                        sitemap: "সাইটম্যাপ"
-                    }
-                }
-            };
-
-            let currentLang = 'en';
-
-            function updateContent() {
-                const t = translations[currentLang];
-                document.getElementById('back-button-text').textContent = t['back-button-text'];
-                document.getElementById('app-name').textContent = t['app-name'];
-                document.getElementById('nav-features').textContent = t['nav-features'];
-                document.getElementById('nav-roles').textContent = t['nav-roles'];
-                document.getElementById('nav-contact').textContent = t['nav-contact'];
-                document.getElementById('user-display-name').textContent = t['nav-profile'];
-                document.getElementById('nav-logout').innerHTML = `<i data-lucide="log-out" class="me-2"></i> ${t['nav-logout']}`;
-                document.getElementById('language-toggle').textContent = t['language-toggle'];
-
-                // Update main content
-                document.getElementById('header-users').textContent = t['header-users'];
-                document.getElementById('sub-header-desc').textContent = t['sub-header-desc'];
-                document.getElementById('col-user-id').textContent = t['col-user-id'];
-                document.getElementById('col-name').textContent = t['col-name'];
-                document.getElementById('col-email').textContent = t['col-email'];
-                document.getElementById('col-role').textContent = t['col-role'];
-                document.getElementById('col-status').textContent = t['col-status'];
-                document.getElementById('col-actions').textContent = t['col-actions'];
-                // Update badge texts using an alternative approach
-                const badgeActive = document.getElementById('status-active');
-                if (badgeActive) {
-                    badgeActive.textContent = t['status-active'];
-                }
-                const badgeActive2 = document.getElementById('status-active-2');
-                if (badgeActive2) {
-                    badgeActive2.textContent = t['status-active'];
-                }
-                const badgeInactive = document.getElementById('status-inactive');
-                if (badgeInactive) {
-                    badgeInactive.textContent = t['status-inactive'];
-                }
-
-                // Update Footer
-                const currentYear = new Date().getFullYear();
-                document.getElementById('footer-copyright').textContent = `© ${currentYear} ${t.footer.copyright}`;
-                document.getElementById('footer-privacy').textContent = t.footer.privacyPolicy;
-                document.getElementById('footer-terms').textContent = t.footer.termsOfService;
-                document.getElementById('footer-sitemap').textContent = t.footer.sitemap;
-                
-                // Re-render Lucide icons after content update
-                lucide.createIcons();
-            }
-
-            // Event listener for language toggle button
-            const languageToggle = document.getElementById('language-toggle');
-            if (languageToggle) {
-                languageToggle.addEventListener('click', () => {
-                    currentLang = currentLang === 'en' ? 'bn' : 'en';
-                    document.documentElement.lang = currentLang;
-                    updateContent();
-                });
-            }
-
-            // Event listener for the back button
-            const backToDashboardButton = document.getElementById('back-to-dashboard');
-            if (backToDashboardButton) {
-                backToDashboardButton.addEventListener('click', () => {
-                    window.location.href = 'admin_dashboard.html';
-                });
-            }
-
-            // Initial content load
-            updateContent();
-        });
-    </script>
 </body>
 </html>
