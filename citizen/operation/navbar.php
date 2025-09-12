@@ -23,11 +23,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html" id="nav-contact" data-i18n-key="navContact">Contact</a>
                 </li>
-                <li class="nav-item ms-lg-3">
-                    <a class="btn btn-outline-primary d-flex align-items-center" href="citizen_profile.php" id="nav-profile">
-                        <i data-lucide="user" class="me-2"></i> <span id="user-display-name">Profile</span>
-                    </a>
-                </li>
+
                 <li class="nav-item ms-lg-3">
                     <a class="btn btn-primary-custom d-flex align-items-center" href="operation/logout.php" id="nav-logout" data-i18n-key="navLogout">
                         <i data-lucide="log-out" class="me-2"></i> Logout
