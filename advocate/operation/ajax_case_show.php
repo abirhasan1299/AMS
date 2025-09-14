@@ -16,7 +16,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             if($row['status'] == 'Assigned'){
                 echo 'primary';
             }elseif ($row['status'] == 'Closed') {
-                echo 'success';
+                echo 'danger';
             }elseif ($row['status'] == 'Open') {
                 echo 'info';
             }elseif ($row['status'] == 'In Progress') {
@@ -27,6 +27,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                 echo 'light';
             }elseif ($row['status'] == 'Dismissed') {
                 echo 'dark';
+            }elseif ($row['status'] == 'Active'){
+                echo 'success';
             }
             ?> text-dark">
                 <?php echo $row['status'] ;?>

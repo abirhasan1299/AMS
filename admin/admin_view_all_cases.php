@@ -209,7 +209,6 @@
                                 <th id="col-client">Client Name</th>
                                 <th id="col-advocate">Advocate Name</th>
                                 <th id="col-status">Status</th>
-                                <th id="col-actions">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -240,14 +239,14 @@
                                        echo 'light';
                                    }elseif ($row['status'] == 'Dismissed') {
                                        echo 'danger';
+                                   }elseif($row['status'] == 'Active'){
+                                       echo 'success';
                                    }
                                    ?> text-dark">
                                    <?php echo $row['status'] ;?>
                                        </span>
                                 </td>
-                                <td>
-                                    <a role="button" class="btn btn-sm btn-danger" href="operation/case-trash.php?id=<?php echo $row['id']; ?>">Trash</a>
-                                </td>
+
                             </tr>
        <?php } ?>
                         </tbody>

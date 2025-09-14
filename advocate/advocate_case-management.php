@@ -273,11 +273,23 @@ include '../configuration/security.php';
             <div class="row g-4 mb-5">
                 <div class="col-lg-12">
                     <div class="info-card">
-                        <h3 class="section-header" id="active-cases-heading">All  Cases</h3>
+                       <div class="d-flex justify-content-between">
+                           <div>
+                               <h3 class="section-header" id="active-cases-heading">All  Cases</h3>
+                           </div>
+                           <div>
+                               <div class="input-group mb-3">
+                                   <span class="input-group-text" id="basic-addon1">CR#</span>
+                                   <input type="text" class="form-control" placeholder="Filter By Case ID" aria-label="Username" aria-describedby="basic-addon1" id="case_filter_id">
+                               </div>
+                           </div>
+                       </div>
+                        <div id="search-case-list">
+
+                        </div>
                         <div id="active-case-list">
 
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -343,6 +355,20 @@ include '../configuration/security.php';
     $(document).ready(function(){
         loadCases();
         loadClosedCases();
+
+        //search cases
+        $("#case_filter_id").on("keyup", function(){
+            let query = $(this).val();
+            $.ajax({
+                url: "operation/search_case.php",
+                method: "POST",
+                data: {query: query},
+                success: function(data){
+                    console.log(data);
+                    $("#search-case-list").html(data);
+                }
+            });
+        });
     });
 
     function loadCases() {
@@ -373,6 +399,9 @@ include '../configuration/security.php';
         $("#caseId").val(selectedCaseId);
         $("#newStatus").val(currentStatus);
     });
+
+
+
 
 
     $("#saveStatus").click(function() {

@@ -298,19 +298,19 @@ include '../configuration/security.php';
                         <div class="row text-center">
                             <div class="col-md-4 mb-4 mb-md-0">
                                 <div class="p-3 bg-light rounded-lg">
-                                    <div class="analytics-metric" id="total-cases-metric">25</div>
+                                    <?php include 'digging/total_case.php'; ?>
                                     <div class="analytics-label" id="total-cases-label">মোট কেস</div>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-4 mb-md-0">
                                 <div class="p-3 bg-light rounded-lg">
-                                    <div class="analytics-metric" id="avg-duration-metric">90</div>
-                                    <div class="analytics-label" id="avg-duration-label">গড় কেস সময়কাল (দিন)</div>
+                                    <?php include 'digging/active_case.php'; ?>
+                                    <div class="analytics-label" id="avg-duration-label">সক্রিয় কেস</div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="p-3 bg-light rounded-lg">
-                                    <div class="analytics-metric" id="closed-cases-metric">10</div>
+                                    <?php include 'digging/closed_case.php'; ?>
                                     <div class="analytics-label" id="closed-cases-label">বন্ধ কেস</div>
                                 </div>
                             </div>

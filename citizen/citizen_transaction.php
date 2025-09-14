@@ -198,7 +198,27 @@ include '../configuration/security.php';
 
         <!-- Current Cases Table -->
         <div class="content-card">
-            <h3 class="section-header" id="cases-table-heading">Transaction List</h3>
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h3 class="section-header" id="cases-table-heading">Transaction List</h3>
+                </div>
+                <div>
+                    <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" >
+                        <div class="d-flex">
+                            <div class="mb-3">
+                                <input style="margin-left: 10px;" type="date" class="form-control" name="fdate">
+                            </div>
+                            <div class="input-group mb-3" style="margin-left: 10px;">
+
+                                <input type="text" class="form-control" placeholder="Transaction ID"  aria-describedby="basic-addon1" name="ftrans_id">
+                            </div>
+                            <div style="margin-left: 10px;" class="mb-3">
+                                <input  type="submit" class="form-control btn btn-sm btn-primary" name="fsubmit" value="FILTER ">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead>
@@ -211,31 +231,69 @@ include '../configuration/security.php';
                         <th scope="col" id="col-billed-amount">Date</th>
                     </tr>
                     </thead>
-                    <tbody id="cases-table-body">
-<?php
-include '../configuration/config.php';
-$sql = "SELECT * FROM transaction LEFT JOIN users ON transaction.advocate_id=users.id WHERE transaction.client_id={$_SESSION['id']} ORDER BY transaction.id DESC";
-$res = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-if (mysqli_num_rows($res) > 0) {
-    $count =1;
-    while ($row = mysqli_fetch_assoc($res)) {
-?>
-        <tr>
-            <td><?php echo $count;?></td>
-            <td><?php echo $row['transaction_code'];?></td>
-            <td><?php echo $row['unique_code'];?></td>
-            <td><?php echo $row['name'];?></td>
-            <td>$<?php echo $row['paid_fees'];?></td>
-            <td><?php echo $row['date'];?></td>
-        </tr>
-<?php
-        $count +=1;
-    }
-}else{
-    echo '<tr style="text-align: center;font-weight: bolder;color:red;">No data found yet ! </tr>';
-}
-?>
-                    </tbody>
+                    <?php
+                    if (isset($_POST['fsubmit'])) {
+                        include '../configuration/config.php';
+
+                        $date = date('d-m-Y', strtotime($_POST['fdate']));
+                        $trans_id = $_POST['ftrans_id'];
+
+                        $sql = "SELECT * FROM transaction LEFT JOIN users ON transaction.advocate_id=users.id WHERE transaction.client_id={$_SESSION['id']} 
+          AND (date = '$date' OR transaction_code = '$trans_id')";
+                        ?>
+                        <tbody id="cases-table-body">
+                        <?php
+                        $res = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                        if (mysqli_num_rows($res) > 0) {
+                            $count =1;
+                            while ($row = mysqli_fetch_assoc($res)) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $count;?></td>
+                                    <td><?php echo $row['transaction_code'];?></td>
+                                    <td><?php echo $row['unique_code'];?></td>
+                                    <td><?php echo $row['name'];?></td>
+                                    <td><?php echo "BDT ".$row['paid_fees'];?></td>
+                                    <td><?php echo $row['date'];?></td>
+                                </tr>
+                                <?php
+                                $count +=1;
+                            }
+                        }else{
+                            echo '<tr style="text-align: center;font-weight: bolder;color:red;">No data found yet ! </tr>';
+                        }
+                        ?>
+                        </tbody>
+
+                        <?php
+                    }else{
+                        ?>
+                        <tbody id="cases-table-body">
+                        <?php
+                        include '../configuration/config.php';
+                        $sql = "SELECT * FROM transaction LEFT JOIN users ON transaction.advocate_id=users.id WHERE transaction.client_id={$_SESSION['id']} ORDER BY transaction.id DESC";
+                        $res = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+                        if (mysqli_num_rows($res) > 0) {
+                            $count =1;
+                            while ($row = mysqli_fetch_assoc($res)) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $count;?></td>
+                                    <td><?php echo $row['transaction_code'];?></td>
+                                    <td><?php echo $row['unique_code'];?></td>
+                                    <td><?php echo $row['name'];?></td>
+                                    <td><?php echo "BDT ".$row['paid_fees'];?></td>
+                                    <td><?php echo $row['date'];?></td>
+                                </tr>
+                                <?php
+                                $count +=1;
+                            }
+                        }else{
+                            echo '<tr style="text-align: center;font-weight: bolder;color:red;">No data found yet ! </tr>';
+                        }
+                        ?>
+                        </tbody>
+                    <?php }?>
                 </table>
             </div>
         </div>
