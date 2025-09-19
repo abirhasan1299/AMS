@@ -2,6 +2,7 @@
 <?php
 ob_start();
 include '../configuration/config.php';
+session_start();
 ?>
 <html lang="en">
 <head>
@@ -184,7 +185,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 <!-- Main Content Section -->
 
 <section id="profile-info" class="container my-4">
-    <?php include 'digging/add-transaction.php'; ?>
     <div class="row">
         <!-- Profile Card -->
         <div class="col-md-8">
@@ -227,19 +227,16 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <h5 class="mb-3">Consultation Fee</h5>
                     <h2 class="text-success mb-4" id="advocate-fee">৳ <?php echo $row['fees'];?></h2>
 
-                    <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" autocomplete="off">
+
                     <!-- Payment Options -->
-                        <input type="hidden" name="client_id" value="<?php echo $_SESSION['id'];?>">
-                        <input type="hidden" name="advocate_id" value="<?php echo $row['id'];?>">
-                        <input type="hidden" name="paid_fees" value="<?php echo $row['fees'];?>">
-                        <input type="hidden" name="date" value="<?php echo date('d-m-Y');?>">
-                        <input type="hidden" name="trans_id" value="<?php
-                        echo  "TXN".strtoupper(bin2hex(random_bytes(4)));
-                        ?>">
-                    <button type="submit" name="payment" class="btn btn-primary w-100 mb-2" id="pay-now-btn">
+
+
+                    <a role="button" href="checkout.php?price=<?php echo $row['fees'];?>&trans_id=<?php
+                    echo  "TXN".strtoupper(bin2hex(random_bytes(4)));
+                    ?>&client_id=<?php echo $_SESSION['id'];?>&advocate_id=<?php echo $row['id'];?>&date=<?php echo date('d-m-Y');?>" class="btn btn-primary w-100 mb-2" id="pay-now-btn">
                         <i class="bi bi-credit-card me-2"></i>Confirm & Pay Now
-                    </button>
-                    </form>
+                    </a>
+
                     <small class="text-muted d-block mt-2">Secure Payment Gateway</small>
                 </div>
             </div>
