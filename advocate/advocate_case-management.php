@@ -269,7 +269,75 @@ include '../configuration/security.php';
                 <p class="lead text-muted mb-4" id="page-description">See an overview of all your active and closed cases, and manage case details.
                 </p>
             </div>
+<?php
+if (isset($_POST['filter'])){
+    include '../configuration/config.php';
+    $code = $_POST['case_id'];
+    $sql = "SELECT * FROM cases WHERE code='$code'";
+    $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
 
+
+?>
+            <div class="row g-4 mb-5">
+                <div class="col-lg-12">
+                    <div class="info-card">
+                        <h3 class="section-header" id="closed-cases-heading">Filter Data</h3>
+                        <div >
+                            <div class="case-list-item" id="active-case-1">
+                                <div>
+                                    <h5>Case CR#<?php echo $row['code'] ;?>: <?php echo $row['title'] ;?></h5>
+                                    <p class="text-muted mb-0">Client: <?php echo $row['client_name'] ;?> | Status:
+                                        <span class="badge bg-<?php
+                                        if($row['status'] == 'Assigned'){
+                                            echo 'primary';
+                                        }elseif ($row['status'] == 'Closed') {
+                                            echo 'danger';
+                                        }elseif ($row['status'] == 'Open') {
+                                            echo 'info';
+                                        }elseif ($row['status'] == 'In Progress') {
+                                            echo 'warning';
+                                        }elseif ($row['status'] == 'Pending') {
+                                            echo 'danger';
+                                        }elseif ($row['status'] == 'On Hold') {
+                                            echo 'light';
+                                        }elseif ($row['status'] == 'Dismissed') {
+                                            echo 'dark';
+                                        }elseif ($row['status'] == 'Active'){
+                                            echo 'success';
+                                        }
+                                        ?> text-dark">
+                <?php echo $row['status'] ;?>
+            </span></p>
+                                </div>
+                                <div class="actions">
+                                    <button class="btn btn-sm btn-outline-primary viewDetailsBtn"
+                                            data-id="<?php echo $row['id']; ?>"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#detailsModal"><i data-lucide="eye" class="me-1"></i> View</button>
+
+                                    <button class="btn btn-sm btn-outline-success updateStatusBtn" data-id="<?php echo $row['id']; ?>"
+                                            data-status="<?php echo $row['status']; ?>"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#statusModal" ><i data-lucide="edit" class="me-1"></i> Update Status</button>
+
+                                    <button class="btn btn-sm btn-outline-info uploadFileBtn"
+                                            data-id="<?php echo $row['id']; ?>"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#uploadModal"><i data-lucide="upload" class="me-1"></i> Add File</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<?php
+        }
+    }else{
+        echo "No Data Found";
+    }
+        } ?>
             <div class="row g-4 mb-5">
                 <div class="col-lg-12">
                     <div class="info-card">
@@ -277,12 +345,17 @@ include '../configuration/security.php';
                            <div>
                                <h3 class="section-header" id="active-cases-heading">All  Cases</h3>
                            </div>
-                           <div>
+                           <form action="#" method="post" autocomplete="off">
+                           <div class="d-flex">
                                <div class="input-group mb-3">
                                    <span class="input-group-text" id="basic-addon1">CR#</span>
-                                   <input type="text" class="form-control" placeholder="Filter By Case ID" aria-label="Username" aria-describedby="basic-addon1" id="case_filter_id">
+                                   <input type="text" name="case_id" class="form-control" placeholder="Filter By Case ID" aria-label="Username" aria-describedby="basic-addon1" id="case_filter_id">
+                               </div>
+                               <div class="mb-3" style="margin-left: 3%;">
+                                   <button type="submit" name="filter" class="btn btn-primary">Filter</button>
                                </div>
                            </div>
+                           </form>
                        </div>
                         <div id="search-case-list">
 
