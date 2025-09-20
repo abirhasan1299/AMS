@@ -227,7 +227,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <td><?php echo ucfirst($row['role']); ?></td>
                                 <td><?php echo $row['password']; ?></td>
                                 <td>
-                                    <a role="button" class="btn btn-sm btn-danger" href="operation/user-trash.php?id=<?php echo $row['id']; ?>">Trash</a>
+                                    <a role="button" class="btn btn-sm btn-primary" href="digging/edit.php?ref=<?php echo $row['id']; ?>">Edit</a>
                                 </td>
                             </tr>
 <?php }?>
