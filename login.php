@@ -191,13 +191,18 @@ session_start();
                         </a>
                     </li>
                     <li class="nav-item ms-lg-4">
-                        <button class="btn btn-secondary-outline-custom" id="language-toggle">English</button>
+                        <div  id="toggle"></div>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
+    <script src="https://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
+    <script>
+        function  loadGoogleTranslate(){
+            new google.translate.TranslateElement("toggle");
+        }
+    </script>
     <!-- Login Content Section -->
     <section class="login-container">
         <div class="login-card text-center">
