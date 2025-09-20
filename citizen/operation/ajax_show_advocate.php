@@ -7,7 +7,7 @@ $type = $_POST['type'];
 $lang = $_POST['lang'];
 $post = $_POST['post'];
 
-    $sql = "SELECT users.id,users.unique_code,profile.specialization,profile.name,profile.post,profile.contact,profile.meet_link,profile.language FROM users INNER JOIN profile ON users.id=profile.user_id WHERE profile.specialization LIKE '%$specialization%' OR profile.language LIKE '%$lang%' OR profile.post LIKE '%$post%'";
+    $sql = "SELECT users.id,users.unique_code,profile.specialization,profile.name,profile.post,profile.contact,profile.meet_link,profile.language FROM users INNER JOIN profile ON users.id=profile.user_id WHERE profile.specialization LIKE '%$specialization%' AND  profile.post LIKE '%$post%'";
 
 
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
