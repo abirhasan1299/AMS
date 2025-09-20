@@ -318,6 +318,13 @@ include '../configuration/security.php';
                         <p class="text-sm text-medium">Search and manage all case files.</p>
                     </a>
                 </div>
+                <div class="col-md-4 mb-4">
+                    <a href="profit.php" class="action-card">
+                        <i data-lucide="folder-search" class="icon-size"></i>
+                        <h5 class="mt-3">Profit</h5>
+                        <p class="text-sm text-medium">All Transaction Cut 10% Platform fees</p>
+                    </a>
+                </div>
             </div>
         </div>
     </main>
