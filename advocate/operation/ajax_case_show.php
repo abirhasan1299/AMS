@@ -2,7 +2,7 @@
 
 include '../../configuration/config.php';
 session_start();
-$sql = "SELECT * FROM `cases` WHERE user_id={$_SESSION['id']} ORDER BY id DESC";
+$sql = "SELECT * FROM `cases` WHERE user_id={$_SESSION['id']} AND status!='Closed' ORDER BY id DESC";
 $result = mysqli_query($conn, $sql);
 
 while ($row = mysqli_fetch_assoc($result)) {

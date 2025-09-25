@@ -212,8 +212,13 @@ include '../configuration/security.php';
                 <div>
                     <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" >
                         <div class="d-flex">
+                            <label>From: </label>
                             <div class="mb-3">
                                 <input style="margin-left: 10px;" type="date" class="form-control" name="fdate">
+                            </div>
+                            <label style="margin-left: 20px;">To: </label>
+                            <div class="mb-3">
+                                <input style="margin-left: 10px;" type="date" class="form-control" name="tdate">
                             </div>
                             <div class="input-group mb-3" style="margin-left: 10px;">
 
@@ -241,10 +246,11 @@ include '../configuration/security.php';
                     if (isset($_POST['fsubmit'])) {
                         include '../configuration/config.php';
 
-                        $date = date('d-m-Y', strtotime($_POST['fdate']));
+                        $fdate = date('d-m-Y', strtotime($_POST['fdate']));
+                        $tdate = date('d-m-Y', strtotime($_POST['tdate']));
                         $trans_id = $_POST['ftrans_id'];
 
-                        $sql = "SELECT * FROM transaction WHERE  date = '$date' OR transaction_code = '$trans_id'";
+                        $sql = "SELECT * FROM transaction WHERE  (date >= '$fdate' AND date <='$tdate') OR transaction_code = '$trans_id'";
                         ?>
                         <tbody id="cases-table-body">
                         <?php

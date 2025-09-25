@@ -348,11 +348,12 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <label class="form-label">Specialization</label>
                         <select name="specialization" class="form-select">
                             <option value="<?php echo $row['specialization']; ?>" selected><?php echo strtoupper($row['specialization']); ?></option>
-                            <option value="criminal-law">Criminal Law</option>
-                            <option value="family-law">Family Law</option>
-                            <option value="corporate-law">Corporate Law</option>
-                            <option value="civil-law">Civil Law</option>
-                            <option value="other">Other</option>
+                            <option value="" id="select-specialization">বিশেষজ্ঞতা নির্বাচন করুন</option>
+                            <option value="family-law" id="opt-family-law">পারিবারিক আইন</option>
+                            <option value="criminal-law" id="opt-criminal-law">ফৌজদারি আইন</option>
+                            <option value="cyber-law" id="opt-cyber-law">সাইবার আইন</option>
+                            <option value="property-law" id="opt-property-law">সম্পত্তি আইন</option>
+                            <option value="corporate-law" id="opt-corporate-law">কর্পোরেট আইন</option>
                         </select>
                     </div>
 

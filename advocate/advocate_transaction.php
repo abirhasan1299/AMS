@@ -206,10 +206,18 @@ include '../configuration/security.php';
                     <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" >
                         <div class="d-flex">
                             <div class="mb-3">
+                                <label class="form-label" >From: </label>
+                            </div>
+                            <div class="mb-3">
                                 <input style="margin-left: 10px;" type="date" class="form-control" name="fdate">
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label" style="margin-left: 20px;">To: </label>
+                            </div>
+                            <div class="mb-3">
+                                <input style="margin-left: 10px;" type="date" class="form-control" name="tdate">
+                            </div>
                             <div class="input-group mb-3" style="margin-left: 10px;">
-
                                 <input type="text" class="form-control" placeholder="Transaction ID"  aria-describedby="basic-addon1" name="ftrans_id">
                             </div>
                             <div style="margin-left: 10px;" class="mb-3">
@@ -235,14 +243,15 @@ include '../configuration/security.php';
                     if (isset($_POST['fsubmit'])) {
                         include '../configuration/config.php';
 
-                        $date = date('d-m-Y', strtotime($_POST['fdate']));
+                        $fdate = date('d-m-Y', strtotime($_POST['fdate']));
+                        $tdate = date('d-m-Y', strtotime($_POST['tdate']));
                         $trans_id = $_POST['ftrans_id'];
 
                         $sql = "SELECT * 
         FROM transaction 
         LEFT JOIN users ON transaction.client_id = users.id 
         WHERE transaction.advocate_id = {$_SESSION['id']} 
-          AND (date = '$date' OR transaction_code = '$trans_id')";
+          AND ((date >= '$fdate' AND date <= '$tdate') OR transaction_code = '$trans_id')";
         ?>
                         <tbody id="cases-table-body">
                         <?php

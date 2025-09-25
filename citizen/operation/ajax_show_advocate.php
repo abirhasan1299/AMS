@@ -7,7 +7,7 @@ $type = $_POST['type'];
 $lang = $_POST['lang'];
 $post = $_POST['post'];
 
-    $sql = "SELECT users.id,users.unique_code,profile.specialization,profile.name,profile.post,profile.contact,profile.meet_link,profile.language FROM users INNER JOIN profile ON users.id=profile.user_id WHERE profile.specialization LIKE '%$specialization%' AND  profile.post LIKE '%$post%'";
+    $sql = "SELECT users.id,users.unique_code,profile.specialization,profile.name,profile.post,profile.contact,profile.meet_link,profile.language,profile.fees FROM users LEFT JOIN profile ON users.id=profile.user_id WHERE profile.specialization LIKE '%$specialization%' OR  profile.post LIKE '%$post%'";
 
 
 $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
@@ -22,6 +22,13 @@ while ($row = mysqli_fetch_assoc($result)) {
                 <h5 id="advocate-name" style="text-align: center;"><?php echo $row['name']; ?></h5>
             </div>
             <p class="text-muted mb-1" id="advocate-specialization-1">Speciality : <?php echo strtoupper($row['specialization']); ?> </p>
+            <p class="text-muted mb-1" id="advocate-specialization-1">Fees : <?php
+                if($row['fees']<=0){
+                    echo "Not Set Yet";
+                }else{
+                    echo "BDT ".strtoupper($row['fees']);
+                }
+                ?> </p>
             <p class="text-muted mb-1" id="advocate-specialization-1">Post : <?php echo strtoupper($row['post']); ?> </p>
             <p class="text-muted mb-1" id="advocate-specialization-1">Meet Link : <?php echo $row['meet_link']; ?> </p>
             <p class="text-muted mb-1" id="advocate-specialization-1">Contact : <?php echo $row['contact']; ?> </p>
