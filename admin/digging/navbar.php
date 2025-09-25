@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <a class="navbar-brand d-flex align-items-center" href="../index.php">
             <i data-lucide="gavel" class="me-2 text-primary-custom-icon"></i>
             <span id="app-name" data-i18n-key="appName">AdvocatePro</span>
         </a>
@@ -15,13 +15,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../feature.html" id="nav-features" data-i18n-key="navFeatures">Features</a>
+                    <a class="nav-link" href="../feature.php" id="nav-features" data-i18n-key="navFeatures">Features</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../roles.html" id="nav-roles" data-i18n-key="navRoles">Roles</a>
+                    <a class="nav-link" href="../roles.php" id="nav-roles" data-i18n-key="navRoles">Roles</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../contact.html" id="nav-contact" data-i18n-key="navContact">Contact</a>
+                    <a class="nav-link" href="../contact.php" id="nav-contact" data-i18n-key="navContact">Contact</a>
                 </li>
                 <li class="nav-item ms-lg-3">
                     <a class="btn btn-primary-custom d-flex align-items-center" href="operation/logout.php" id="nav-logout" data-i18n-key="navLogout">

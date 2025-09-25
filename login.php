@@ -162,7 +162,7 @@ session_start();
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top py-3">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <i data-lucide="gavel" class="me-2 text-primary-custom-icon"></i>
                 <span id="app-name">আইনপ্রহরী</span>
             </a>
@@ -172,16 +172,16 @@ session_start();
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link" href="feature.html" id="nav-features">বৈশিষ্ট্যসমূহ</a>
+                        <a class="nav-link" href="feature.php" id="nav-features">বৈশিষ্ট্যসমূহ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="roles.html" id="nav-roles">ভূমিকা</a>
+                        <a class="nav-link" href="roles.php" id="nav-roles">ভূমিকা</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html" id="nav-contact">যোগাযোগ</a>
+                        <a class="nav-link" href="contact.php" id="nav-contact">যোগাযোগ</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.html" id="nav-login">
+                        <a class="btn btn-primary-custom d-flex align-items-center" href="index.php" id="nav-login">
                             <i data-lucide="log-in" class="me-2"></i> প্রবেশ করুন
                         </a>
                     </li>
