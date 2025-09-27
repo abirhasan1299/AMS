@@ -252,7 +252,16 @@
                         Passwords do not match!
                     </div>';
                 }else{
-                    $sql = "INSERT INTO users(unique_code,name,email,phone,password,role) VALUES ('$unique_code','$name','$email','$phone','$password','$role')";
+                    $res = mysqli_query($conn,"SELECT id FROM users ORDER BY id DESC LIMIT 1") or die(mysqli_error($conn));
+                    if(mysqli_num_rows($res) > 0){
+                        while($row = mysqli_fetch_assoc($res)){
+                            $init_id = $row['id'] + 1;
+                        }
+                    } else {
+                        $init_id = 1;
+                    }
+
+                    $sql = "INSERT INTO users(id,unique_code,name,email,phone,password,role) VALUES ('$init_id','$unique_code','$name','$email','$phone','$password','$role')";
                     $query = mysqli_query($conn, $sql) or die(mysqli_error($conn));
                     if($query){
                         echo '<div class="alert alert-success" role="alert">Signup Successfully Done, Go <a href="login.php">Login</a> Area ...</div>';
@@ -290,7 +299,6 @@
                         <option value="">নির্বাচন করুন...</option>
                         <option value="citizen" id="option-citizen">নাগরিক</option>
                         <option value="advocate" id="option-advocate">আইনজীবী</option>
-                        <option value="admin" id="option-admin">প্রশাসক</option>
                     </select>
                     <small class="form-text role-note" id="role-verification-note">দ্রষ্টব্য: আইনজীবী, পুলিশ কর্মকর্তা, বিচারক এবং প্রশাসকের ভূমিকার জন্য যাচাইকরণ প্রয়োজন হবে।</small>
                 </div>

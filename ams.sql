@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 12, 2025 at 05:59 PM
+-- Generation Time: Sep 27, 2025 at 03:19 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -112,10 +112,8 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`id`, `title`, `date`, `time`, `type`, `venue`, `user_id`) VALUES
-(2, 'Tanzina Case Disscussion', '2025-09-22', '12:26', 'In Office', 'Home', 3),
-(3, 'hgdfsgdfsgdfg', '2025-09-14', '20:38', 'Online Video', 'Titumir College, Liton Flat', 3),
-(4, 'dafadsfadsf', '2025-10-04', '12:14', 'In Office', 'dfadsf', 3),
-(5, 'Team Meeting ', '2025-09-22', '18:17', 'In Office', 'Dhaka, Liton Flat', 5);
+(5, 'Team Meeting ', '2025-09-22', '18:17', 'In Office', 'Dhaka, Liton Flat', 5),
+(6, 'djfkdsfdsfds ', '2025-09-14', '22:24', 'Home', 'dsfdsf', 3);
 
 -- --------------------------------------------------------
 
@@ -140,7 +138,12 @@ INSERT INTO `notification` (`id`, `user_id`, `title`, `des`, `datetime`) VALUES
 (8, 3, 'Congrats ! New Payment Added - 1000', 'Someone need consult with you. Transaction ID is: TXN93BB1559 <br>Contact with him very soon', '2025-09-11 16:56:32'),
 (9, 7, 'Payment Successfully Done', 'New Consultant Booking Done. Transaction ID is: TXN4C0D01A1 <br>Someone will contact you very soon', '2025-09-12 06:42:02'),
 (10, 3, 'Congrats ! New Payment Added - 5000', 'Someone need consult with you. Transaction ID is: TXN4C0D01A1 <br>Contact with him very soon', '2025-09-12 06:42:02'),
-(11, 3, 'Congrats ! Admin Give a Case: Saddest Himu Murder Case of decade', 'adsf dsfadsf dsa fads fsadf sdaf dsa fads fads fsadf adsf asd fadsf dsf ads fdsf adsfadsf dsf dsf asdfasdfads fds ', '2025-09-12 17:38:53');
+(11, 3, 'Congrats ! Admin Give a Case: Saddest Himu Murder Case of decade', 'adsf dsfadsf dsa fads fsadf sdaf dsa fads fads fsadf adsf asd fadsf dsf ads fdsf adsfadsf dsf dsf asdfasdfads fds ', '2025-09-12 17:38:53'),
+(12, 3, 'New Event Addeddjfkdsfdsfds ', 'You have been added recently new event-New Event Addeddjfkdsfdsfds  Date: 2025-09-14 Time: 22:24', '2025-09-14 16:24:18'),
+(13, 6, 'Payment Successfully Done', 'New Consultant Booking Done. Transaction ID is: TXNA6ADEEB8 <br>Someone will contact you very soon', '2025-09-19 12:45:16'),
+(14, 3, 'Congrats ! New Payment Added - 5000', 'Someone need consult with you. Transaction ID is: TXNA6ADEEB8 <br>Contact with him very soon', '2025-09-19 12:45:16'),
+(15, 6, 'Payment Successfully Done', 'New Consultant Booking Done. Transaction ID is: TXN34F7348C <br>Someone will contact you very soon', '2025-09-26 16:05:41'),
+(16, 3, 'Congrats ! New Payment Added - 5000', 'Someone need consult with you. Transaction ID is: TXN34F7348C <br>Contact with him very soon', '2025-09-26 16:05:41');
 
 -- --------------------------------------------------------
 
@@ -167,7 +170,7 @@ CREATE TABLE `profile` (
 --
 
 INSERT INTO `profile` (`user_id`, `name`, `post`, `address`, `contact`, `email`, `meet_link`, `img_name`, `specialization`, `language`, `fees`) VALUES
-(3, 'Abir Hasan Bitla', 'Senior Advocate', 'Shagufta Road', '01324940998', 'tamamabir@gmail.com', 'https://kjlkaskfljdsf', '1757581646_5a7bc9ee8614eef19ae0caf54f24af30 (1).jpg', 'civil-law', 'Hindi', 5000),
+(3, 'Abir Hasan Bitla', 'Senior Advocate', 'Shagufta Road', '01324940998', 'tamamabir@gmail.com', 'https://kjlkaskfljdsf', '1757581646_5a7bc9ee8614eef19ae0caf54f24af30 (1).jpg', 'family-law', 'Hindi', 5000),
 (5, 'Lily Naughty Euresia', 'Senior Advocate', 'Jiraitoli, Nimtoli , Tongi , Gazipur', '01986557505', 'linu@gmail.com', 'https://kjlkaskfljdsf', '1757581917_images.jpeg', 'civil-law', 'Only Known Gali', 0);
 
 -- --------------------------------------------------------
@@ -191,7 +194,8 @@ CREATE TABLE `transaction` (
 
 INSERT INTO `transaction` (`id`, `client_id`, `advocate_id`, `paid_fees`, `transaction_code`, `date`) VALUES
 (4, 6, 3, 1000, 'TXN93BB1559', '11-09-2025'),
-(5, 7, 3, 5000, 'TXN4C0D01A1', '12-09-2025');
+(6, 6, 3, 5000, 'TXNA6ADEEB8', '19-09-2025'),
+(7, 6, 3, 5000, 'TXN34F7348C', '26-09-2025');
 
 -- --------------------------------------------------------
 
@@ -214,10 +218,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `unique_code`, `name`, `email`, `phone`, `password`, `role`) VALUES
-(3, '68BFB2E39097D', 'Abir Hasan', 'tamamabir@gmail.com', '01324940998', 'asdf', 'advocate'),
+(9, '68D7FFDA5F84F', 'Tela Men', 'jio@gmail.com', '123456', '123456', 'citizen'),
 (5, '68C291E1319BF', 'Linu', 'lin@gmail.com', '01923311808', 'linu123', 'advocate'),
-(6, '68C29A8F9B9C1', 'Tamim Bal', 'tamim@gmail.com', '54564564564', 'tamim', 'citizen'),
-(8, '68C3C5392A7B5', 'Rishab Patel', 'rishab@gmail.com', '918545415643', 'rishab', 'admin');
+(8, '68C3C5392A7B5', 'Rishab Patel', 'rishab@gmail.com', '918545415643', 'rishab', 'admin'),
+(3, '68BFB2E39097D', 'Abir Hasan', 'tamamabir@gmail.com', '01324940998', 'asdf', 'advocate'),
+(6, '68C29A8F9B9C1', 'Tamim', 'tamim@gmail.com', '54564564564', 'tamim', 'citizen');
 
 --
 -- Indexes for dumped tables
@@ -263,7 +268,7 @@ ALTER TABLE `transaction`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -291,25 +296,19 @@ ALTER TABLE `case_sub_document`
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
